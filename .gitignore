@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.tmp
+logs/
+data
+test-results.xml
+prisma
+.env
+client/.env
+client/node_modules/
+client/dist/

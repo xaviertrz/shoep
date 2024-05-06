@@ -1,0 +1,29 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "version": "v0.0.1",
+      "title": "SHOEP",
+      "description": "A shoe eCommerce"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3030",
+        "description": ""
+      }
+    ],
+    "paths": {
+      "/health": {
+        "get": {
+          "description": "",
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {}
+    }
+  }
