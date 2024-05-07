@@ -1,6 +1,5 @@
-import { useEffect, /* useState */ } from 'react';
+import { useEffect /* useState */ } from 'react';
 import { Layout } from '../../components/Layout';
-/* import { useProductStore } from '../hooks/useProductStore'; */
 import { useAuthStore } from '../../auth/hooks/useAuthStore';
 import { roleIds } from '../../constants/role-ids';
 import { ProductDashboard } from '../components/ProductDashboard';
@@ -9,11 +8,12 @@ import { PageTitle } from '../../components/PageTitle';
 
 import { SiMercadopago } from 'react-icons/si';
 import { VscLinkExternal } from 'react-icons/vsc';
+import { useProductStore } from '../hooks/useProductStore';
 
 export function MyProducts() {
   const { user, logout } = useAuthStore() as { user: ISeller; logout: () => void };
-/*   const { fetchProductsBySellerUuid } = useProductStore(); */
-/*   const [currentPage, setCurrentPage] = useState(1); */
+  const { fetchProductsBySellerUuid } = useProductStore();
+  /*   const [currentPage, setCurrentPage] = useState(1); */
   const redirect_uri = 'https://typing-voters-hotmail-continental.trycloudflare.com/v1/mercado_pago_redirect';
   const mp_auth_uri = `https://auth.mercadopago.com/authorization?client_id=${import.meta.env.VITE_MP_APP_ID}&response_type=code&platform_id=mp&state=${user.uuid}&redirect_uri=${redirect_uri}`;
 
@@ -21,11 +21,11 @@ export function MyProducts() {
     if (user?.role_id !== roleIds.SELLER) logout();
   }, [logout, user]);
 
-/*   useEffect(() => {
-    fetchProductsBySellerUuid(user!.uuid, currentPage);
-  }, [currentPage]); */
+  useEffect(() => {
+    fetchProductsBySellerUuid(user!.uuid);
+  }, []);
 
-/*   const handlePageChange = (page: number) => {
+  /*   const handlePageChange = (page: number) => {
     setCurrentPage(page); 
   }; */
   /*   console.log(user.mp_access_token);

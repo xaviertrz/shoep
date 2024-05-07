@@ -11,7 +11,7 @@ export class SellerRepository {
   static async create(sellerData: ISeller): Promise<ResponseDto<SellerDto>> {
     try {
       const { id, ...createData } = sellerData; // eslint-disable-line @typescript-eslint/no-unused-vars
-      await prisma.user.create({ data: createData });
+      await prisma.users.create({ data: createData });
       const sellerDto = await mapToSellerDto(sellerData);
       return { success: true, message: 'Usuario creado correctamente', data: sellerDto };
     } catch (error) {
@@ -27,7 +27,7 @@ export class SellerRepository {
   static async getAll(page: number, perPage: number): Promise<ResponseDto<SellerDto[]>> {
     try {
       const skip = (page - 1) * perPage;
-      const users = (await prisma.user.findMany({
+      const users = (await prisma.users.findMany({
         where: {
           active: true,
           role_id: roleIds.SELLER

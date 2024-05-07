@@ -11,7 +11,7 @@ export class MpRepository {
 
       // Almacenar la fecha de expiración en formato datetime en la base de datos
       const mp_expiration_date = expirationDate.toISOString();
-      const updatedUser = await prisma.user.update({
+      const updatedUser = await prisma.users.update({
         where: {
           uuid: user_uuid!
         },

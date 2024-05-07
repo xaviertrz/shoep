@@ -7,7 +7,7 @@ export class UserRepository {
   static async getAll(page: number, perPage: number): Promise<ResponseDto<IUser[]>> {
     try {
       const skip = (page - 1) * perPage;
-      const users = await prisma.user.findMany({
+      const users = await prisma.users.findMany({
         where: {
           active: true
         },
@@ -25,7 +25,7 @@ export class UserRepository {
     try {
       const response = await this.getById(uuid);
       if (response.success) {
-        await prisma.user.update({
+        await prisma.users.update({
           where: { uuid: uuid },
           data: { active: false, deleted_at: new Date() }
         });
@@ -40,7 +40,7 @@ export class UserRepository {
 
   static async getById(uuid: string): Promise<ResponseDto<IUser>> {
     try {
-      const user = await prisma.user.findUnique({
+      const user = await prisma.users.findUnique({
         where: {
           uuid: uuid,
           active: true
@@ -58,7 +58,7 @@ export class UserRepository {
 
   static async getByEmail(email: string): Promise<ResponseDto<IUser>> {
     try {
-      const user = await prisma.user.findUnique({
+      const user = await prisma.users.findUnique({
         where: { email }
       });
 

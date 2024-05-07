@@ -4,11 +4,11 @@ import { ControllerError } from '../shared/domain/exceptions/ControllerException
 import { HttpResponseCodes } from '../shared/HttpResponseCodes';
 import { CreatePreferenceDto } from '../shared/dtos/mp/create-preference.dto';
 import { AddressId } from '../shared/domain/value-object/UserAddress/AddressId';
-import { Quantity } from '../shared/domain/value-object/Cart/Quantity';
 import { Uuid } from '../shared/domain/value-object/Uuid';
 import { ProductRepository } from '../repositories/product.repository';
 import MercadoPagoConfig, { Payment } from 'mercadopago';
 import { OrderService } from '../services/order.service';
+import { Quantity } from '../shared/domain/value-object/Quantity';
 
 export class MpController {
   private static client: MercadoPagoConfig;

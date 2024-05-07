@@ -9,7 +9,7 @@ export function useCategoryStore() {
 
   async function fetchCategories() {
     try {
-      const url = import.meta.env.VITE_API_URL;
+      const url = import.meta.env.VITE_API_URL; //http://localhost:3030/v1
       const endpoint = 'categories';
       const response = await fetch(`${url}/${endpoint}`, {
         method: 'GET',

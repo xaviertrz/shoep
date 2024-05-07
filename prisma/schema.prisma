@@ -1,0 +1,187 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DEV_DATABASE_URL")
+  relationMode = "foreignKeys"
+}
+
+model cities {
+  id            Int            @id @default(autoincrement())
+  department_id Int
+  name          String         @db.VarChar(255)
+  departments   departments    @relation(fields: [department_id], references: [id], onDelete: Cascade, map: "cities_ibfk_1")
+  neighborhood  neighborhood[]
+
+  @@index([department_id], map: "department_id")
+}
+
+model departments {
+  id     Int      @id @default(autoincrement())
+  name   String   @db.VarChar(255)
+  cities cities[]
+}
+
+model orders {
+  id               Int              @id @default(autoincrement())
+  uuid             String           @unique @default(uuid())
+  user_uuid        String
+  total            Int
+  status           String
+  paid_at          DateTime
+  variant_uuid     String
+  address_id       Int
+  quantity         Int
+  product_variants product_variants @relation(fields: [variant_uuid], references: [uuid], onUpdate: Restrict, map: "orders_ibfk_1")
+  user_addresses   user_addresses   @relation(fields: [address_id], references: [id], onUpdate: Restrict, map: "orders_ibfk_2")
+  users            users            @relation(fields: [user_uuid], references: [uuid], onDelete: NoAction, onUpdate: NoAction, map: "orders_user_id_fkey")
+
+  @@index([user_uuid], map: "orders_user_id_fkey")
+  @@index([address_id], map: "address_id")
+  @@index([variant_uuid], map: "variant_uuid")
+}
+
+model product_categories {
+  id       Int        @id @default(autoincrement())
+  name     String     @db.VarChar(255)
+  products products[]
+}
+
+model products {
+  id                 Int                @id @default(autoincrement())
+  uuid               String             @unique @default(uuid())
+  category_id        Int
+  seller_uuid        String
+  name               String             @db.VarChar(255)
+  description        String?            @db.VarChar(1000)
+  created_at         DateTime           @default(now())
+  modified_at        DateTime?
+  brand              String             @db.VarChar(50)
+  deleted_at         DateTime?          @db.DateTime(0)
+  active             Boolean
+  product_variants   product_variants[]
+  product_categories product_categories @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users              users              @relation(fields: [seller_uuid], references: [uuid], onDelete: NoAction, onUpdate: NoAction, map: "products_seller_id_fkey")
+
+  @@index([category_id], map: "products_category_id_fkey")
+  @@index([seller_uuid], map: "products_seller_id_fkey")
+}
+
+model roles {
+  id    Int     @id @default(autoincrement())
+  name  String  @db.VarChar(255)
+  users users[]
+}
+
+model user_addresses {
+  id              Int          @id @default(autoincrement())
+  neighborhood_id Int
+  user_uuid       String
+  address_line1   String       @db.VarChar(255)
+  address_line2   String?      @db.VarChar(255)
+  phone_number    BigInt
+  orders          orders[]
+  neighborhood    neighborhood @relation(fields: [neighborhood_id], references: [id], onDelete: Cascade, map: "user_addresses_ibfk_1")
+  users           users        @relation(fields: [user_uuid], references: [uuid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([user_uuid], map: "user_addresses_user_id_fkey")
+  @@index([neighborhood_id], map: "neighborhood_id")
+}
+
+model users {
+  id                       Int              @id @default(autoincrement())
+  uuid                     String           @unique @default(uuid())
+  role_id                  Int
+  username                 String           @db.VarChar(255)
+  email                    String           @unique @db.VarChar(255)
+  phone_number             BigInt           @unique
+  nit                      BigInt?          @unique
+  password                 String           @db.VarChar(255)
+  active                   Boolean          @default(true)
+  created_at               DateTime         @default(now()) @db.DateTime(0)
+  modified_at              DateTime?        @db.DateTime(0)
+  deleted_at               DateTime?        @db.DateTime(0)
+  confirmed                Boolean          @default(false)
+  mp_access_token          String?          @db.VarChar(255)
+  mp_refresh_token         String?          @db.VarChar(255)
+  mp_token_expiration_date DateTime?        @db.DateTime(0)
+  orders                   orders[]
+  products                 products[]
+  user_addresses           user_addresses[]
+  roles                    roles            @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([role_id], map: "users_role_id_fkey")
+}
+
+model neighborhood {
+  id             Int              @id @default(autoincrement())
+  city_id        Int
+  name           String           @db.VarChar(255)
+  cities         cities           @relation(fields: [city_id], references: [id], onDelete: Cascade, map: "neighborhood_ibfk_1")
+  user_addresses user_addresses[]
+
+  @@index([city_id], map: "city_id")
+}
+
+model product_materials {
+  id               Int                @id @default(autoincrement())
+  name             String             @db.VarChar(250)
+  product_variants product_variants[]
+}
+
+model product_sizes {
+  id               Int                @id @default(autoincrement())
+  number           Int
+  centimeters      Decimal            @db.Decimal(8, 2)
+  product_variants product_variants[]
+}
+
+model product_variants {
+  id                Int               @id @default(autoincrement())
+  uuid              String            @unique(map: "skus_uuid_key") @default(uuid())
+  product_uuid      String
+  sku               String?           @db.VarChar(255)
+  stock             Int
+  price             Int
+  created_at        DateTime          @default(now())
+  modified_at       DateTime?
+  deleted_at        DateTime?
+  size_id           Int
+  material_id       Int
+  upc               BigInt?
+  color_id          Int
+  active            Boolean
+  orders            orders[]
+  product_images    product_images[]
+  product_materials product_materials @relation(fields: [material_id], references: [id], onDelete: Cascade, map: "product_variants_ibfk_1")
+  product_sizes     product_sizes     @relation(fields: [size_id], references: [id], onDelete: Cascade, map: "product_variants_ibfk_2")
+  product_colors    product_colors    @relation(fields: [color_id], references: [id], onDelete: Cascade, map: "product_variants_ibfk_3")
+  products          products          @relation(fields: [product_uuid], references: [uuid], onDelete: NoAction, onUpdate: NoAction, map: "skus_product_uuid_fkey")
+
+  @@index([material_id], map: "material_id")
+  @@index([size_id], map: "size_id")
+  @@index([product_uuid], map: "skus_product_id_fkey")
+  @@index([color_id], map: "color_id")
+}
+
+model product_colors {
+  id               Int                @id @default(autoincrement())
+  name             String             @db.Text
+  hex_code         String             @db.VarChar(15)
+  product_variants product_variants[]
+}
+
+model product_images {
+  id               Int              @id @default(autoincrement())
+  variant_uuid     String
+  source           String           @db.VarChar(255)
+  active           Boolean
+  deleted_at       DateTime?        @db.DateTime(0)
+  created_at       DateTime         @db.DateTime(0)
+  product_variants product_variants @relation(fields: [variant_uuid], references: [uuid], onDelete: Cascade, map: "product_images_ibfk_1")
+
+  @@index([variant_uuid], map: "variant_uuid")
+}

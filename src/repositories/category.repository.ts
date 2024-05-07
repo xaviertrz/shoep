@@ -22,6 +22,8 @@ export class CategoryRepository {
             ORDER BY
                 pc.id;
     `;
+      /* const categorias = await prisma.product_categories.findMany({});
+      console.log(categorias); */
       return { success: true, message: 'Lista de categorías consultada correctamente', data: categories };
     } catch (error) {
       console.log(error);

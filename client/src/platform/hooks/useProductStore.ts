@@ -170,6 +170,7 @@ export function useProductStore() {
         },
         body: JSON.stringify(productFormData)
       });
+      console.log(localStorage.getItem('token')!);
       const productData: ResponseDto<IProduct> = await response.json();
       if (productData.success) {
         Swal.fire('Producto actualizado', productData.message, 'success');
@@ -215,7 +216,8 @@ export function useProductStore() {
       const response = await fetch(`${url}/${endpoint}/${variantUuid}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-token': localStorage.getItem('token')!
         }
       });
       const productData: ResponseDto<IProduct> = await response.json();

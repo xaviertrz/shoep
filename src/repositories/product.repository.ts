@@ -10,13 +10,13 @@ const prisma: PrismaClient = new PrismaClient();
 export class ProductRepository {
   static async create(productData: IProduct): Promise<void> {
     const { id, ...createData } = productData; // eslint-disable-line @typescript-eslint/no-unused-vars
-    await prisma.product.create({ data: createData });
+    await prisma.products.create({ data: createData });
   }
 
   static async createVariant(variantData: IProductVariant): Promise<ResponseDto<void>> {
     try {
       const { id, ...createData } = variantData; // eslint-disable-line @typescript-eslint/no-unused-vars
-      await prisma.product_variant.create({ data: createData });
+      await prisma.product_variants.create({ data: createData });
       return { success: true, message: 'Variante creada correctamente' };
     } catch (error) {
       console.log(error);
@@ -32,7 +32,7 @@ export class ProductRepository {
     try {
       const response = await this.getById(uuid);
       if (response.success) {
-        await prisma.product.update({
+        await prisma.products.update({
           where: { uuid: uuid },
           data: { active: false, deleted_at: new Date() }
         });
@@ -49,7 +49,7 @@ export class ProductRepository {
     try {
       const response = await this.getVariantById(uuid);
       if (response.success) {
-        const deletedVariant = await prisma.product_variant.update({
+        const deletedVariant = await prisma.product_variants.update({
           where: { uuid: uuid },
           data: { active: false, deleted_at: new Date() }
         });
@@ -66,7 +66,7 @@ export class ProductRepository {
   static async getAll(page: number, perPage: number): Promise<ResponseDto<any[]>> {
     try {
       const skip = (page - 1) * perPage;
-      const products = await prisma.product.findMany({
+      const products = await prisma.products.findMany({
         skip,
         take: perPage
       });
@@ -84,7 +84,7 @@ export class ProductRepository {
 
   static async getById(uuid: string): Promise<any> {
     try {
-      const product = await prisma.product.findUnique({
+      const product = await prisma.products.findUnique({
         include: {
           product_variants: {
             include: {
@@ -130,7 +130,7 @@ export class ProductRepository {
 
   static async getOnlyProductData(uuid: string): Promise<any> {
     try {
-      const product = await prisma.product.findUnique({
+      const product = await prisma.products.findUnique({
         where: {
           uuid,
           active: true
@@ -150,7 +150,7 @@ export class ProductRepository {
 
   static async getOnlyVariantData(uuid: string): Promise<any> {
     try {
-      const variant = await prisma.product_variant.findUnique({
+      const variant = await prisma.product_variants.findUnique({
         where: {
           uuid,
           active: true
@@ -170,7 +170,7 @@ export class ProductRepository {
 
   static async getVariantById(uuid: string): Promise<ResponseDto<IPreference>> {
     try {
-      const variant = await prisma.product_variant.findUnique({
+      const variant = await prisma.product_variants.findUnique({
         where: {
           active: true,
           uuid: uuid
@@ -205,7 +205,7 @@ export class ProductRepository {
 
   static async getVariantsByProductId(uuid: string): Promise<ResponseDto<IVariant[]>> {
     try {
-      const variants = await prisma.product_variant.findMany({
+      const variants = await prisma.product_variants.findMany({
         include: {
           product_images: {
             where: { active: true }
@@ -230,7 +230,7 @@ export class ProductRepository {
   static async getAllBySellerUuidd(sellerUuid: string, page: number, perPage: number): Promise<any> {
     try {
       const skip = (page - 1) * perPage;
-      const products = await prisma.product.findMany({
+      const products = await prisma.products.findMany({
         include: {
           product_variants: {
             include: {
@@ -263,7 +263,7 @@ export class ProductRepository {
   static async getAllByCategoryId(categoryId: number, page: number, perPage: number): Promise<any> {
     try {
       const skip = (page - 1) * perPage;
-      const products = await prisma.product.findMany({
+      const products = await prisma.products.findMany({
         include: {
           product_variants: {
             include: {
@@ -292,6 +292,7 @@ export class ProductRepository {
         take: perPage
       });
 
+      console.log(products);
       /* const productsDto = products.map(product => {
         const mappedUser = mapToSellerDto(product.users);
         return { ...product, users: mappedUser };
@@ -308,12 +309,12 @@ export class ProductRepository {
 
   static async updateProduct(uuid: string, productData: IProduct): Promise<ResponseDto<any>> {
     try {
-      const product = await prisma.product.findUnique({
+      const product = await prisma.products.findUnique({
         where: { uuid: uuid, active: true }
       });
       if (product) {
         const { id, ...updatedData } = productData; // eslint-disable-line @typescript-eslint/no-unused-vars
-        const updatedProduct = await prisma.product.update({
+        const updatedProduct = await prisma.products.update({
           include: {
             product_variants: {
               include: {
@@ -323,6 +324,9 @@ export class ProductRepository {
                 product_colors: true,
                 product_materials: true,
                 product_sizes: true
+              },
+              where: {
+                active: true
               }
             },
             product_categories: true
@@ -342,12 +346,12 @@ export class ProductRepository {
 
   static async updateVariant(uuid: string, variantData: IProductVariant): Promise<ResponseDto<any>> {
     try {
-      const variant = await prisma.product_variant.findUnique({
+      const variant = await prisma.product_variants.findUnique({
         where: { uuid: uuid, active: true }
       });
       if (variant) {
         const { id, ...updatedData } = variantData; // eslint-disable-line @typescript-eslint/no-unused-vars
-        const updatedVariant = await prisma.product_variant.update({
+        const updatedVariant = await prisma.product_variants.update({
           where: { uuid: uuid },
           data: updatedData
         });
@@ -364,11 +368,11 @@ export class ProductRepository {
 
   static async updateVariantStock(uuid: string, stock: number): Promise<ResponseDto<any>> {
     try {
-      const variant = await prisma.product_variant.findUnique({
+      const variant = await prisma.product_variants.findUnique({
         where: { uuid: uuid, active: true }
       });
       if (variant) {
-        const updatedVariant = await prisma.product_variant.update({
+        const updatedVariant = await prisma.product_variants.update({
           where: { uuid: uuid },
           data: { stock }
         });

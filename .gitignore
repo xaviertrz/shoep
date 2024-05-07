@@ -4,7 +4,6 @@ dist/
 logs/
 data
 test-results.xml
-prisma
 .env
 client/.env
 client/node_modules/
