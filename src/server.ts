@@ -54,7 +54,7 @@ export class Server {
     this.express.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
     this.express.use(express.static(path.join(__dirname, '../public')));
     this.express.use('/public/images/', express.static(path.join(__dirname, '../public/images/')));
-    this.express.get('/', (req, res) => {
+    this.express.get('*', (req, res) => {
       res.sendFile(path.join(__dirname, '../public', 'index.html'));
     });
     router.use((err: Error, req: Request, res: Response) => {

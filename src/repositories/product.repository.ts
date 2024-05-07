@@ -292,7 +292,6 @@ export class ProductRepository {
         take: perPage
       });
 
-      console.log(products);
       /* const productsDto = products.map(product => {
         const mappedUser = mapToSellerDto(product.users);
         return { ...product, users: mappedUser };
