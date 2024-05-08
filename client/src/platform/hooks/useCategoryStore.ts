@@ -2,14 +2,15 @@ import { useAppDispatch, useAppSelector } from '../../hooks/config';
 import { ResponseDto } from '../../dtos/ResponseDto';
 import { onSetCategories, onSetActive } from '../../store/category/categorySlice';
 import { GetAllCategoriesDto } from '../../dtos/CategoryDto';
+import { ENV } from '../../env';
 
 export function useCategoryStore() {
   const { categories, active } = useAppSelector(state => state.category);
   const dispatch = useAppDispatch();
+  const url = ENV.PROD;
 
   async function fetchCategories() {
     try {
-      const url = import.meta.env.VITE_API_URL; //http://localhost:3030/v1
       const endpoint = 'categories';
       const response = await fetch(`${url}/${endpoint}`, {
         method: 'GET',

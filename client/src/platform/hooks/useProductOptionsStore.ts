@@ -5,15 +5,16 @@ import { IMaterial } from '../../interfaces/IMaterial';
 import { IColor } from '../../interfaces/IColor';
 import { ISize } from '../../interfaces/ISize';
 import { useCategoryStore } from './useCategoryStore';
+import { ENV } from '../../env';
 
 export function useProductOptionsStore() {
   const { fetchCategories } = useCategoryStore();
   const { colors, materials, sizes } = useAppSelector(state => state.productOptions);
   const dispatch = useAppDispatch();
+  const url = ENV.PROD;
 
   async function fetchProductOptions() {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const materialsEndpoint = 'materials';
       const colorsEndpoint = 'colors';
       const sizesEndpoint = 'sizes';

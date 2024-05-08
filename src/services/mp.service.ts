@@ -10,13 +10,13 @@ export class MpService {
   private static mp_endpoint = process.env.MP_OAUTH_URL!;
   private static client_id = process.env.MP_CLIENT_ID!;
   private static client_secret = process.env.MP_CLIENT_SECRET!;
-  private static redirect_uri = 'https://indication-pressing-bryan-grove.trycloudflare.com/v1/mercado_pago_redirect';
+  private static redirect_uri = '/v1/mercado_pago_redirect';
   private static test_access_token = 'TEST-1460744161712328-041211-bf20c1b7b79f010c0433d095632d2e4b-1766276555';
   private static test_public_key = 'TEST-1e5dd829-9d8a-4e04-98e6-ee02f5139ab2';
   private static test_client_id = '1460744161712328';
   private static test_client_secret = '2ZXl2sHkmTcBgfxlBqwqZX710CSE3KlN';
 
-  static async createToken(code: string, user_uuid: string) {
+  static async createToken(code: string, user_uuid: string, host: string) {
     const grant_type = 'authorization_code';
 
     const response = await fetch(this.mp_endpoint, {
@@ -30,7 +30,7 @@ export class MpService {
         client_secret: this.test_client_secret,
         code,
         grant_type,
-        redirect_uri: this.redirect_uri,
+        redirect_uri: `${host}${this.redirect_uri}`,
         test_token: this.test_token
       })
     });
@@ -72,13 +72,13 @@ export class MpService {
   static async createPreference(
     client: MercadoPagoConfig,
     preferenceData: IPreference,
-    orderData: IPreOrderDto
+    orderData: IPreOrderDto,
+    host: string
   ): Promise<ResponseDto<string>> {
     if (preferenceData.stock < orderData.quantity) {
       return { success: false, message: 'No hay stock suficiente para la cantidad solicitada' };
     }
 
-    const backRedirects = 'http://localhost:5173/';
     const preference = await new Preference(client).create({
       body: {
         items: [
@@ -95,16 +95,16 @@ export class MpService {
           }
         },
         external_reference: orderData.user_uuid,
-        notification_url: 'https://indication-pressing-bryan-grove.trycloudflare.com/v1/payments',
+        notification_url: `${host}/v1/payments`,
         marketplace_fee: 0.05,
         auto_return: 'all',
         back_urls: {
-          success: `${backRedirects}/pagos/exitoso`,
-          failure: `${backRedirects}/pagos/fallido`
+          success: `${host}/pagos/exitoso`,
+          failure: `${host}/pagos/fallido`
         },
         redirect_urls: {
-          success: `${backRedirects}/pagos/exitoso`,
-          failure: `${backRedirects}/pagos/fallido`
+          success: `${host}/pagos/exitoso`,
+          failure: `${host}/pagos/fallido`
         }
       }
     });

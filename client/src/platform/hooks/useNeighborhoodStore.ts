@@ -2,14 +2,15 @@ import { useAppDispatch, useAppSelector } from '../../hooks/config';
 import { ResponseDto } from '../../dtos/ResponseDto';
 import { onSetActiveNeighborhood, onSetNeighborhoods } from '../../store/neighborhood/neighborhoodSlice';
 import { INeighborhood } from '../../interfaces/INeighborhood';
+import { ENV } from '../../env';
 
 export function useNeighborhoodStore() {
   const { neighborhoods, active } = useAppSelector(state => state.neighborhood);
   const dispatch = useAppDispatch();
+  const url = ENV.PROD;
 
   async function fetchNeighborhoods() {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'neighborhoods';
 
       const response = await fetch(`${url}/${endpoint}`, {

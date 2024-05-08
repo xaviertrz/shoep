@@ -5,15 +5,16 @@ import { onSetActive, onSetAddresses } from '../../store/addresses/addressSlice'
 import { IAddressForm } from '../interfaces/IAddressForm';
 import { AddressDto } from '../../dtos/AddressDto';
 import { onCloseAddAddressModal, onCloseEditAddressModal } from '../../store/modal/modalSlice';
+import { ENV } from '../../env';
 import Swal from 'sweetalert2';
 
 export function useAddressStore() {
   const { addresses, active } = useAppSelector(state => state.address);
   const dispatch = useAppDispatch();
+  const url = ENV.PROD;
 
   async function fetchAddressesByUserId(userUuid: string) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'user-addresses';
       const filter = 'by-user-uuid';
       const response = await fetch(`${url}/${endpoint}/${filter}/${userUuid}`, {
@@ -38,7 +39,6 @@ export function useAddressStore() {
         phone_number: Number(addressFormData.phone_number)
       };
 
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'user-addresses';
       const response = await fetch(`${url}/${endpoint}`, {
         method: 'POST',
@@ -71,7 +71,6 @@ export function useAddressStore() {
         phone_number: Number(addressFormData.phone_number)
       };
 
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'user-addresses';
       const response = await fetch(`${url}/${endpoint}/${toSendData.id}`, {
         method: 'PUT',
@@ -96,7 +95,6 @@ export function useAddressStore() {
 
   async function deleteUserAddress(addressId: number) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'user-addresses';
       const response = await fetch(`${url}/${endpoint}/${addressId}`, {
         method: 'DELETE',

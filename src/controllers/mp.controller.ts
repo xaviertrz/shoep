@@ -25,7 +25,8 @@ export class MpController {
         );
       }
 
-      const response = await MpService.createToken(code, user_uuid);
+      const host = req.get('host')!;
+      const response = await MpService.createToken(code, user_uuid, host);
       if (response.success) {
         res.status(HttpResponseCodes.OK).json(response);
       } else {
@@ -58,8 +59,9 @@ export class MpController {
         quantity: quantity.getValue()
       };
 
+      const host = req.get('host')!;
       this.client = new MercadoPagoConfig({ accessToken: preferenceData.data!.products.users.mp_access_token! });
-      const response = await MpService.createPreference(this.client, preferenceData.data!, orderData);
+      const response = await MpService.createPreference(this.client, preferenceData.data!, orderData, host);
       if (response.success) {
         res.status(HttpResponseCodes.OK).json(response);
       } else {

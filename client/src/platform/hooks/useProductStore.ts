@@ -11,15 +11,16 @@ import { IProductImage } from '../../interfaces/IProductImage';
 import { onCloseEditVariantModal, onCloseImageManagerModal } from '../../store/modal/modalSlice';
 import { useModalStore } from './useModalStore';
 import Swal from 'sweetalert2';
+import { ENV } from '../../env';
 
 export function useProductStore() {
   const { products, active, activeVariant } = useAppSelector(state => state.product);
   const dispatch = useAppDispatch();
   const { closeAddVariantModal, closeEditProductModal } = useModalStore();
+  const url = ENV.PROD;
 
   async function fetchProductsByCategoryId(categoryId: number, page: number) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'products';
       const filter = 'by-category';
 
@@ -38,7 +39,6 @@ export function useProductStore() {
 
   async function fetchProductByUuid(productUuid: string) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'products';
       const filter = 'by-uuid';
 
@@ -57,7 +57,6 @@ export function useProductStore() {
 
   async function fetchProductsBySellerUuid(sellerUuid: string, page: number = 1) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'products';
       const filter = 'by-seller-uuid';
 
@@ -95,7 +94,6 @@ export function useProductStore() {
         }
       };
 
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'products';
       const response = await fetch(`${url}/${endpoint}`, {
         method: 'POST',
@@ -133,7 +131,6 @@ export function useProductStore() {
         price: Number(variantFormData.price)
       };
 
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'product-variants';
       const response = await fetch(`${url}/${endpoint}`, {
         method: 'POST',
@@ -160,7 +157,6 @@ export function useProductStore() {
 
   async function editProduct(productFormData: IEditProductForm) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'products';
       const response = await fetch(`${url}/${endpoint}/${productFormData.uuid}`, {
         method: 'PUT',
@@ -186,7 +182,6 @@ export function useProductStore() {
 
   async function editVariant(variantFormData: IEditVariantForm) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'product-variants';
       const response = await fetch(`${url}/${endpoint}/${variantFormData.uuid}`, {
         method: 'PUT',
@@ -211,7 +206,6 @@ export function useProductStore() {
 
   async function deleteVariant(variantUuid: string) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'product-variants';
       const response = await fetch(`${url}/${endpoint}/${variantUuid}`, {
         method: 'DELETE',
@@ -234,7 +228,6 @@ export function useProductStore() {
 
   async function postImages(imageFormData: FormData) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'variant-images';
       const response = await fetch(`${url}/${endpoint}`, {
         method: 'POST',
@@ -257,7 +250,6 @@ export function useProductStore() {
       });
       // Llama a la función para subir las imágenes
 
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'variant-images';
       const response = await fetch(`${url}/${endpoint}`, {
         method: 'POST',

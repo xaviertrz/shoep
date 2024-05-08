@@ -1,10 +1,12 @@
 import { PaymentDto } from '../../dtos/PaymentDto';
 import { ResponseDto } from '../../dtos/ResponseDto';
+import { ENV } from '../../env';
 
 export function usePaymentStore() {
+  const url = ENV.PROD;
+
   async function generatePreference(paymentData: PaymentDto) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'preferences';
       const response = await fetch(`${url}/${endpoint}`, {
         method: 'POST',
