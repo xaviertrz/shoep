@@ -18,11 +18,9 @@ import addressRoutes from './routes/user-address.routes';
 import neighborhoodRoutes from './routes/neighborhood.routes';
 import orderRoutes from './routes/order.routes';
 import healthRoute from './routes/health.route';
-import swaggerUi from 'swagger-ui-express';
 import { HttpResponseCodes } from './shared/HttpResponseCodes';
 import path from 'path';
 import './polyfills';
-const swaggerOutput = require('./swagger_output.json'); // eslint-disable-line @typescript-eslint/no-var-requires
 export class Server {
   private express: express.Express;
   readonly port: string;
@@ -51,7 +49,6 @@ export class Server {
     this.express.use(addressRoutes);
     this.express.use(neighborhoodRoutes);
     this.express.use(orderRoutes);
-    this.express.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
     this.express.use(express.static(path.join(__dirname, '../public')));
     this.express.use('/public/images/', express.static(path.join(__dirname, '../public/images/')));
     this.express.get('*', (req, res) => {

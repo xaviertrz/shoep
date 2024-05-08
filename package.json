@@ -10,9 +10,7 @@
     "dev": "ts-node-dev src/index.ts",
     "test": "jest",
     "seed": "ts-node prisma/seed.ts",
-    "build": "npm run build:clean && npm run build:tsc",
-    "build:tsc": "tsc -p tsconfig.prod.json",
-    "build:clean": "rm -r dist; exit 0",
+    "build": "tsc -p tsconfig.prod.json",
     "test:unit": "NODE_ENV=test jest",
     "eslint": "eslint .",
     "eslint:fix": "eslint --fix ."
