@@ -9,14 +9,18 @@ import { ISellerForm } from '../interfaces/ISellerForm';
 import { IBuyerForm } from '../interfaces/IBuyerForm';
 import Swal from 'sweetalert2';
 import { onCloseLoginModal } from '../../store/modal/modalSlice';
+import { ENV } from '../../env';
 
 export function useAuthStore() {
   const { status, user, errorMessage } = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
+  const url = ENV.PROD;
 
   async function login(authData: IAuthForm) {
     try {
-      const response = await fetch('http://localhost:3030/v1/users/authenticate', {
+      const endpoint = 'users';
+      const action = 'authenticate';
+      const response = await fetch(`${url}/${endpoint}/${action}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -49,7 +53,6 @@ export function useAuthStore() {
 
   async function registerBuyer(buyerData: IBuyerForm) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'users';
       const type = 'buyer';
       const response = await fetch(`${url}/${endpoint}/${type}`, {
@@ -75,7 +78,6 @@ export function useAuthStore() {
 
   async function registerSeller(sellerData: ISellerForm) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'users';
       const type = 'seller';
       console.log(sellerData);
@@ -109,7 +111,6 @@ export function useAuthStore() {
         return dispatch(onLogout(''));
       }
 
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'users';
       const type = 'refresh-token';
       const response = await fetch(`${url}/${endpoint}/${type}`, {
