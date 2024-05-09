@@ -9,12 +9,14 @@ import { PageTitle } from '../../components/PageTitle';
 import { SiMercadopago } from 'react-icons/si';
 import { VscLinkExternal } from 'react-icons/vsc';
 import { useProductStore } from '../hooks/useProductStore';
+import { ENV } from '../../env';
 
 export function MyProducts() {
+  const url = ENV.PROD;
   const { user, logout } = useAuthStore() as { user: ISeller; logout: () => void };
   const { fetchProductsBySellerUuid } = useProductStore();
   /*   const [currentPage, setCurrentPage] = useState(1); */
-  const redirect_uri = 'https://typing-voters-hotmail-continental.trycloudflare.com/v1/mercado_pago_redirect';
+  const redirect_uri = `${url}/mercado_pago_redirect`;
   const mp_auth_uri = `https://auth.mercadopago.com/authorization?client_id=${import.meta.env.VITE_MP_APP_ID}&response_type=code&platform_id=mp&state=${user.uuid}&redirect_uri=${redirect_uri}`;
 
   useEffect(() => {
