@@ -1,8 +1,8 @@
-runtime: nodejs
+runtime: nodejs20
 
 env_variables:
   PORT: 3030
-  DATABASE_URL: 'mysql://root:%5BSXt%2B%24UsHyzDLABB@104.155.131.196:3306/my-shoep'
+  DATABASE_URL: 'mysql://root:%5BSXt%2B%24UsHyzDLABB@10.36.240.3:3306/my-shoep'
   DEV_DATABASE_URL: 'mysql://root@localhost/shoep'
   JWT_SECRET_KEY: 'Shoep2024UdiPg'
   SOCRATA_API_TOKEN: '83wQK1qZRBx7zVCZ3LizzBklM'
