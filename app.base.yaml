@@ -15,7 +15,3 @@ env_variables:
   MP_CLIENT_SECRET: ${MP_CLIENT_SECRET}
   MP_CLIENT_ID: ${MP_CLIENT_ID}
   MP_OAUTH_URL: ${MP_OAUTH_URL}
-
-vpc_access_connector:
-  name: projects/winter-field-422515-r6/locations/REGION/connectors/CONNECTOR_NAME
-  egress_setting: EGRESS_SETTING
