@@ -66,7 +66,7 @@ export function ImageManagerModal() {
           {variantImages.map(image => (
             <div key={image.id} className="flex gap-2">
               <div className="flex items-center mb-4 mr-4 relative">
-                <img src={image.source} alt="Imagen de variante" className="w-24 h-24 mr-2 rounded-lg" />
+                <img src={image.source} alt="Imagen de variante" className="w-24 h-24 mr-2 rounded-lg object-cover" />
                 <button
                   className=" transition duration-300 ease-in-out text-red-500 hover:text-red-600 absolute -top-2 right-0"
                   onClick={() => handleDeleteImage(image.id)}

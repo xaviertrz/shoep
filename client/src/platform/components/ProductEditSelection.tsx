@@ -236,7 +236,7 @@ export function ProductEditSelection() {
                             key={image.id}
                             src={image.source}
                             alt=""
-                            className="w-10 h-10 rounded-md border-2 border-gray-300"
+                            className="w-10 h-10 rounded-md border-2 border-gray-300 object-cover"
                           />
                         ))}
                         <button

@@ -72,7 +72,7 @@ export function ProductDashboard() {
           {filteredProducts.length > 0 ? (
             filteredProducts.map(product => (
               <tr key={product.id} className={`flex text-left items-center border-gray-200 bg-gray-50 border-b`}>
-                <td className="px-4 py-4 w-20">
+                <td className="px-4 py-4 w-fit">
                   <img
                     src={product.product_variants?.[0]?.product_images?.[0]?.source}
                     alt={product.name}

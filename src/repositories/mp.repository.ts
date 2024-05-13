@@ -4,14 +4,12 @@ const prisma: PrismaClient = new PrismaClient();
 export class MpRepository {
   static async storeToken(user_uuid: string, data: any) {
     try {
-      // Calcular la fecha de expiración del token
-      const currentTimestamp = Math.floor(Date.now() / 1000); // Fecha actual en segundos
-      const expirationTimestamp = currentTimestamp + data.expires_in; // Fecha de expiración en segundos
-      const expirationDate = new Date(expirationTimestamp * 1000); // Convertir a milisegundos y crear objeto Date
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      const expirationTimestamp = currentTimestamp + data.expires_in;
+      const expirationDate = new Date(expirationTimestamp * 1000);
 
-      // Almacenar la fecha de expiración en formato datetime en la base de datos
       const mp_expiration_date = expirationDate.toISOString();
-      const updatedUser = await prisma.users.update({
+      await prisma.users.update({
         where: {
           uuid: user_uuid!
         },
@@ -22,7 +20,10 @@ export class MpRepository {
         }
       });
 
-      return { success: true, message: 'Datos de Mercado Pago almacenados correctamente', data: updatedUser };
+      return {
+        success: true,
+        message: 'Vinculación realizada correctamente. Puedes cerrar esta página'
+      };
     } catch (error) {
       console.log(error);
       return { success: false, message: 'Error almacenando tokens en la base de datos' };

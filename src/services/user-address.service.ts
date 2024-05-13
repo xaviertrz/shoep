@@ -40,7 +40,6 @@ export class UserAddressService {
           ...rest,
           ...addressData
         };
-        console.log(updatedUserData);
 
         const response = await UserAddressRepository.updateUserAddress(id, updatedUserData);
         if (response.success) {

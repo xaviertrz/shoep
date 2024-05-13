@@ -48,9 +48,11 @@ export function useAddressStore() {
         },
         body: JSON.stringify(addressFormData)
       });
-      const addressData: ResponseDto<IAddress> = await response.json();
+      const addressData: ResponseDto<IAddress[]> = await response.json();
       if (addressData.success) {
+        console.log(addressData.data!);
         Swal.fire('Dirección creada', addressData.message, 'success');
+        dispatch(onSetAddresses(addressData.data!));
         dispatch(onCloseAddAddressModal());
       } else {
         Swal.fire('Error creando dirección', addressData.message, 'error');

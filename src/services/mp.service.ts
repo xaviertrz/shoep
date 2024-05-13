@@ -3,6 +3,8 @@ import { ResponseDto } from '../shared/dtos/response/response.dto';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { IPreference } from '../interfaces/preference.interface';
 import { IPreOrderDto } from '../shared/dtos/order/pre-order.dto';
+import { UserRepository } from '../repositories/user.repository';
+import { roleIds } from '../constants/role-ids';
 /* import { v4 as uuidv4 } from 'uuid'; */
 
 export class MpService {
@@ -18,6 +20,15 @@ export class MpService {
 
   static async createToken(code: string, user_uuid: string, host: string) {
     const grant_type = 'authorization_code';
+
+    const user = await UserRepository.getById(user_uuid);
+    if (!user.success) {
+      return { success: false, message: 'Usuario no encontrado' };
+    }
+
+    if (user.data?.role_id === roleIds.BUYER || user.data?.role_id === roleIds.ADMIN) {
+      return { success: false, message: 'No tienes permisos para realizar esta acción' };
+    }
 
     const response = await fetch(this.mp_endpoint, {
       method: 'POST',
@@ -36,6 +47,7 @@ export class MpService {
     });
 
     const data = await response.json();
+    console.log(data);
     if (data?.access_token) {
       return await MpRepository.storeToken(user_uuid, data);
     }

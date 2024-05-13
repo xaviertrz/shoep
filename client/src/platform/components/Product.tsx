@@ -1,10 +1,10 @@
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FaBarcode } from 'react-icons/fa6';
 import { SiMercadopago } from 'react-icons/si';
 import { RxSize } from 'react-icons/rx';
-
-import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+
 import { useProductStore } from '../hooks/useProductStore';
 import { IProductImage } from '../../interfaces/IProductImage';
 import { useAuthStore } from '../../auth/hooks/useAuthStore';
@@ -13,7 +13,6 @@ import { DeletePublicationModal } from './DeletePublicationModal';
 import { useModalStore } from '../hooks/useModalStore';
 import { useQuantityStore } from '../hooks/useQuantityStore';
 import { SizesTableModal } from './SizesTableModal';
-import { ProductColors } from '../../store/variant/interfaces/IVariantState';
 
 export function Product() {
   const navigate = useNavigate();
@@ -23,22 +22,6 @@ export function Product() {
   const { activeVariant, setActiveVariant } = useProductStore();
   const { active, fetchProductByUuid } = useProductStore();
   const { quantity, setQuantity, increaseQuantityByOne, decreaseQuantityByOne } = useQuantityStore();
-  const [allProductVariantColors, setAllProductVariantColors] = useState<ProductColors[]>([]);
-
-  useEffect(() => {
-    if (active) {
-      const colors: ProductColors[] = [];
-
-      active.product_variants.forEach(variant => {
-        colors.push(variant.product_colors);
-      });
-
-      // Actualizar el estado con los colores acumulados
-      console.log({ colors });
-      setAllProductVariantColors(colors);
-      console.log(allProductVariantColors);
-    }
-  }, [active]);
 
   const [variantImage, setVariantImage] = useState<IProductImage>();
 
