@@ -10,6 +10,7 @@ import { IBuyerForm } from '../interfaces/IBuyerForm';
 import Swal from 'sweetalert2';
 import { onCloseLoginModal } from '../../store/modal/modalSlice';
 import { ENV } from '../../env';
+import { IAdminForm } from '../interfaces/IAdminForm';
 
 export function useAuthStore() {
   const { status, user, errorMessage } = useAppSelector(state => state.auth);
@@ -33,7 +34,6 @@ export function useAuthStore() {
       } else {
         localStorage.setItem('token', user.data!.token!);
         localStorage.setItem('token-init-date', new Date().getTime().toString());
-        console.log(localStorage.getItem('token'));
         if (user.data?.role_id === roleIds.BUYER) {
           dispatch(onLoginBuyer(user.data as IBuyer));
         } else dispatch(onLoginSeller(user.data as ISeller));
@@ -66,10 +66,11 @@ export function useAuthStore() {
       if (!user.success) {
         Swal.fire('No fue posible registrarte', user.message!, 'error');
       } else {
+        Swal.fire('Registro exitoso', 'Tu cuenta ha sido creada correctamente', 'success');
+        localStorage.setItem('token', user.data!.token!);
+        localStorage.setItem('token-init-date', new Date().getTime().toString());
         dispatch(onLoginBuyer(user.data!));
       }
-
-      /* localStorage.setItem('token', data.access_token); */
     } catch (error) {
       localStorage.clear();
       dispatch(onLogout('Error al registrar al comprador'));
@@ -80,13 +81,41 @@ export function useAuthStore() {
     try {
       const endpoint = 'users';
       const type = 'seller';
-      console.log(sellerData);
       const response = await fetch(`${url}/${endpoint}/${type}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(sellerData)
+      });
+      const user: ResponseDto<ISeller> = await response.json();
+      if (!user.success) {
+        Swal.fire('No fue posible registrarte', user.message!, 'error');
+      } else {
+        Swal.fire('Registro exitoso', 'Tu cuenta ha sido creada correctamente', 'success');
+        localStorage.setItem('token', user.data!.token!);
+        localStorage.setItem('token-init-date', new Date().getTime().toString());
+        dispatch(onLoginSeller(user.data!));
+      }
+
+      /* localStorage.setItem('token', data.access_token); */
+    } catch (error) {
+      localStorage.clear();
+      dispatch(onLogout('Error al registrar al vendedor'));
+    }
+  }
+
+  async function registerAdmin(adminData: IAdminForm) {
+    try {
+      const endpoint = 'users';
+      const type = 'admin';
+      console.log(adminData);
+      const response = await fetch(`${url}/${endpoint}/${type}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(adminData)
       });
       const user: ResponseDto<ISeller> = await response.json();
       if (!user.success) {
@@ -146,6 +175,7 @@ export function useAuthStore() {
     login,
     logout,
     registerBuyer,
-    registerSeller
+    registerSeller,
+    registerAdmin
   };
 }

@@ -5,6 +5,8 @@ import {
   onCloseDeleteVariantConfirmationModal,
   onCloseImageManagerModal,
   onCloseLoginModal,
+  onCloseDeletePublicationModal,
+  onOpenDeletePublicationModal,
   onOpenAddVariantModal,
   onOpenEditProductModal,
   onOpenEditVariantModal,
@@ -14,7 +16,11 @@ import {
   onCloseEditAddressModal,
   onOpenLoginModal,
   onOpenAddAddressModal,
-  onCloseAddAddressModal
+  onCloseAddAddressModal,
+  onOpenMenuModal,
+  onCloseMenuModal,
+  onOpenSizeTableModal,
+  onCloseSizeTableModal
 } from '../../store/modal/modalSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/config';
 
@@ -29,7 +35,10 @@ export function useModalStore() {
     isImageManagerModalOpen,
     isEditAddressModalOpen,
     isLoginModalOpen,
-    isAddAddressModalOpen
+    isAddAddressModalOpen,
+    isDeletePublicationModalOpen,
+    isMenuModalOpen,
+    isSizeTableModalOpen
   } = useAppSelector(state => state.modal);
 
   const openEditProductModal = () => {
@@ -96,6 +105,30 @@ export function useModalStore() {
     dispatch(onCloseAddAddressModal());
   };
 
+  const openDeletePublicationModal = () => {
+    dispatch(onOpenDeletePublicationModal());
+  };
+
+  const closeDeletePublicationModal = () => {
+    dispatch(onCloseDeletePublicationModal());
+  };
+
+  const openMenuModal = () => {
+    dispatch(onOpenMenuModal());
+  };
+
+  const closeMenuModal = () => {
+    dispatch(onCloseMenuModal());
+  };
+
+  const openSizeTableModal = () => {
+    dispatch(onOpenSizeTableModal());
+  };
+
+  const closeSizeTableModal = () => {
+    dispatch(onCloseSizeTableModal());
+  };
+
   /*   const toggleDateModal = () => {
     isDateModalOpen ? openDateModal() : closeDateModal();
   }; */
@@ -110,6 +143,9 @@ export function useModalStore() {
     isEditAddressModalOpen,
     isLoginModalOpen,
     isAddAddressModalOpen,
+    isDeletePublicationModalOpen,
+    isMenuModalOpen,
+    isSizeTableModalOpen,
 
     //* Métodos
     openEditProductModal,
@@ -120,6 +156,11 @@ export function useModalStore() {
     openEditAddressModal,
     openLoginModal,
     openAddAddressModal,
+    openDeletePublicationModal,
+    openMenuModal,
+    openSizeTableModal,
+    closeSizeTableModal,
+    closeMenuModal,
     closeEditProductModal,
     closeEditVariantModal,
     closeAddVariantModal,
@@ -127,6 +168,7 @@ export function useModalStore() {
     closeImageManagerModal,
     closeEditAddressModal,
     closeLoginModal,
-    closeAddAddressModal
+    closeAddAddressModal,
+    closeDeletePublicationModal
   };
 }

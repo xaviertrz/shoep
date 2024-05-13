@@ -1,20 +1,20 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { initialState } from './initialState';
-import { IMaterial } from '../../interfaces/IMaterial';
-import { IColor } from '../../interfaces/IColor';
-import { ISize } from '../../interfaces/ISize';
+import { GetAllMaterialsDto } from '../../dtos/GetAllMaterialsDto';
+import { GetAllColorsDto } from '../../dtos/GetAllColorsDto';
+import { GetAllSizesDto } from '../../dtos/GetAllSizesDto';
 
 export const productOptionsSlice = createSlice({
   name: 'productOptions',
   initialState,
   reducers: {
-    onSetMaterials: (state, action: PayloadAction<IMaterial[]>) => {
+    onSetMaterials: (state, action: PayloadAction<GetAllMaterialsDto[]>) => {
       state.materials = action.payload;
     },
-    onSetColors: (state, action: PayloadAction<IColor[]>) => {
+    onSetColors: (state, action: PayloadAction<GetAllColorsDto[]>) => {
       state.colors = action.payload;
     },
-    onSetSizes: (state, action: PayloadAction<ISize[]>) => {
+    onSetSizes: (state, action: PayloadAction<GetAllSizesDto[]>) => {
       state.sizes = action.payload;
     }
   }

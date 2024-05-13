@@ -1,12 +1,22 @@
 import { Link } from 'react-router-dom';
+import { FaCog } from 'react-icons/fa';
 import { IProduct } from '../../interfaces/IProduct';
+import { useAuthStore } from '../../auth/hooks/useAuthStore';
+import { roleIds } from '../../constants/role-ids';
 
 export function ProductPreview({ product }: { product: IProduct }) {
+  const { user } = useAuthStore();
+
   return (
     <Link
       to={`/productos/${product.uuid}`}
       className="flex flex-col border rounded-md overflow-hidden transition duration-300 transform hover:shadow-lg bg-white"
     >
+      {user?.role_id === roleIds.ADMIN && (
+        <button className="absolute top-2 right-2 bg-white p-2 rounded-md" /* onClick={handleDeleteImage} */>
+          <FaCog className="text-gray-700 text-2xl hover:scale-105" />
+        </button>
+      )}
       <div className="flex-none w-full">
         <img
           src={product.product_variants[0]?.product_images[0]?.source}

@@ -14,8 +14,9 @@ export class CategoryRepository {
         FROM
             product_categories pc
         LEFT JOIN products p ON
-            pc.id = p.category_id AND(
-                p.active = TRUE)
+            pc.id = p.category_id AND
+            p.active = TRUE AND
+            p.blocked = FALSE
             GROUP BY
                 pc.id,
                 pc.name

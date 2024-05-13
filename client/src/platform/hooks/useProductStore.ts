@@ -14,9 +14,9 @@ import Swal from 'sweetalert2';
 import { ENV } from '../../env';
 
 export function useProductStore() {
+  const { closeAddVariantModal, closeEditProductModal } = useModalStore();
   const { products, active, activeVariant } = useAppSelector(state => state.product);
   const dispatch = useAppDispatch();
-  const { closeAddVariantModal, closeEditProductModal } = useModalStore();
   const url = ENV.PROD;
 
   async function fetchProductsByCategoryId(categoryId: number, page: number) {
@@ -25,6 +25,60 @@ export function useProductStore() {
       const filter = 'by-category';
 
       const response = await fetch(`${url}/${endpoint}/${filter}/${categoryId}?page=${page}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const productsData: ResponseDto<IProduct[]> = await response.json();
+      dispatch(onSetProducts(productsData.success ? productsData.data! : []));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function fetchProductsByMaterialId(materialId: number, page: number) {
+    try {
+      const endpoint = 'products';
+      const filter = 'by-material';
+
+      const response = await fetch(`${url}/${endpoint}/${filter}/${materialId}?page=${page}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const productsData: ResponseDto<IProduct[]> = await response.json();
+      dispatch(onSetProducts(productsData.success ? productsData.data! : []));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function fetchProductsBySizeId(sizeId: number, page: number) {
+    try {
+      const endpoint = 'products';
+      const filter = 'by-size';
+
+      const response = await fetch(`${url}/${endpoint}/${filter}/${sizeId}?page=${page}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const productsData: ResponseDto<IProduct[]> = await response.json();
+      dispatch(onSetProducts(productsData.success ? productsData.data! : []));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function fetchProductsByColorId(colorId: number, page: number) {
+    try {
+      const endpoint = 'products';
+      const filter = 'by-color';
+
+      const response = await fetch(`${url}/${endpoint}/${filter}/${colorId}?page=${page}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -146,7 +200,7 @@ export function useProductStore() {
         formData.append('variant_uuid', variantData.data!.uuid);
         const imagesData: ResponseDto<IProduct> = await postImages(formData);
         if (imagesData.success) {
-          dispatch(onSetActive(imagesData.data!));
+          dispatch(onSetActive(imagesData.success ? imagesData.data! : ({} as IProduct)));
           closeAddVariantModal();
         }
       }
@@ -166,7 +220,6 @@ export function useProductStore() {
         },
         body: JSON.stringify(productFormData)
       });
-      console.log(localStorage.getItem('token')!);
       const productData: ResponseDto<IProduct> = await response.json();
       if (productData.success) {
         Swal.fire('Producto actualizado', productData.message, 'success');
@@ -198,6 +251,29 @@ export function useProductStore() {
         dispatch(onCloseEditVariantModal());
       } else {
         Swal.fire('Error', productData.message, 'error');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function blockProduct(product_uuid: string) {
+    try {
+      const endpoint = 'products';
+      const action = 'block';
+      const response = await fetch(`${url}/${endpoint}/${action}/${product_uuid}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-token': localStorage.getItem('token')!
+        }
+      });
+      const blockResponse: ResponseDto<void> = await response.json();
+      if (blockResponse.success) {
+        Swal.fire('Producto bloqueado', blockResponse.message, 'success');
+        closeEditProductModal();
+      } else {
+        Swal.fire('Error', blockResponse.message, 'error');
       }
     } catch (error) {
       console.error(error);
@@ -269,7 +345,6 @@ export function useProductStore() {
 
   async function deleteImage(imageId: number) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'variant-images';
       const response = await fetch(`${url}/${endpoint}/${imageId}`, {
         method: 'DELETE',
@@ -298,7 +373,6 @@ export function useProductStore() {
 
   async function fetchImagesByVariantUuid(variantUuid: string) {
     try {
-      const url = import.meta.env.VITE_API_URL;
       const endpoint = 'variant-images';
       const filter = 'by-variant-uuid';
 
@@ -339,6 +413,14 @@ export function useProductStore() {
     }
   }
 
+  async function setProducts(products: IProduct[]) {
+    try {
+      dispatch(onSetProducts(products));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return {
     // Propiedades
     products,
@@ -346,6 +428,7 @@ export function useProductStore() {
     activeVariant,
 
     // Métodos
+    setProducts,
     cleanList,
     uploadImages,
     deleteImage,
@@ -355,7 +438,11 @@ export function useProductStore() {
     editProduct,
     editVariant,
     deleteVariant,
+    blockProduct,
     fetchProductsByCategoryId,
+    fetchProductsByMaterialId,
+    fetchProductsBySizeId,
+    fetchProductsByColorId,
     fetchProductByUuid,
     fetchProductsBySellerUuid,
     fetchImagesByVariantUuid,

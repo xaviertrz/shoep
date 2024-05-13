@@ -19,6 +19,8 @@ import { SuccessPayment } from '../platform/views/SuccessPayment';
 import { FailedPayment } from '../platform/views/FailedPayment';
 import { MyOrders } from '../platform/views/MyOrders';
 import { Profile } from '../platform/views/Profile';
+import { RegisterAdmin } from '../auth/views/RegisterAdmin';
+import { TermsAndConditions } from '../home/views/TermsAndConditions';
 
 export const AppRouter = () => {
   const { status, checkAuthToken } = useAuthStore();
@@ -49,15 +51,22 @@ export const AppRouter = () => {
           <Route path="/registrar" element={<Register />} />
           <Route path="/registrar/comprador" element={<RegisterBuyer />} />
           <Route path="/registrar/vendedor" element={<RegisterSeller />} />
+          <Route path="/registrar/administrador" element={<RegisterAdmin />} />
         </>
       )}
       <Route path="/" element={<Home />} />
       <Route path="/perfil/:userUuid" element={<Profile />} />
       <Route path="/catalogo" element={<Catalog />} />
       <Route path="/categorias/:id" element={<Catalog />} />
+      <Route path="/materiales/:id" element={<Catalog />} />
+      <Route path="/tallas/:id" element={<Catalog />} />
+      <Route path="/colores/:id" element={<Catalog />} />
+
       <Route path="/productos/:productUuid" element={<ProductView />} />
       <Route path="/pagos/exitoso" element={<SuccessPayment />} />
       <Route path="/pagos/fallido" element={<FailedPayment />} />
+
+      <Route path="/terminos-y-condiciones" element={<TermsAndConditions />} />
 
       {/* Unknown routes */}
       <Route path="/*" element={<Navigate to="/" />} />

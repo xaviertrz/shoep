@@ -50,7 +50,7 @@ export function AddAddressModal() {
     <Modal
       isOpen={isAddAddressModalOpen}
       onRequestClose={closeAddAddressModal}
-      className="sticky top-0 w-2/5 flex-col p-8 text-left border rounded-lg bg-white"
+      className="sticky top-0 w-4/5 flex-col p-8 text-left border rounded-lg bg-white"
       overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-30"
       closeTimeoutMS={50}
     >
@@ -76,6 +76,7 @@ export function AddAddressModal() {
             value={addressData.address_line1}
             onChange={handleChange}
             className="border border-gray-300 rounded-md px-3 py-2 w-full"
+            required
           />
         </div>
         <div className="flex flex-col">
@@ -91,7 +92,7 @@ export function AddAddressModal() {
             className="border border-gray-300 rounded-md px-3 py-2 w-full"
           />
         </div>
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="flex flex-col">
             <label htmlFor="neighborhood_id" className="font-light text-gray-500 text-sm uppercase mb-1">
               Barrio *
@@ -124,6 +125,7 @@ export function AddAddressModal() {
               value={addressData.phone_number}
               onChange={handleChange}
               className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              required
             />
           </div>
         </div>

@@ -1,13 +1,9 @@
-import { Constants } from '../utils/constants';
-import { Page } from '../shared/domain/value-object/Page';
 import { ResponseDto } from '../shared/dtos/response/response.dto';
-import { ISize } from '../interfaces/size.interface';
 import { SizeRepository } from '../repositories/size.repository';
+import { GetAllSizesDto } from '../shared/dtos/size/get-all-sizes.dto';
 
 export class SizeService {
-  static async getAll(page: Page): Promise<ResponseDto<ISize[]>> {
-    const perPage = Constants.RECORDS_PER_PAGE;
-
-    return await SizeRepository.getAll(page.getValue(), perPage);
+  static async getAll(): Promise<ResponseDto<GetAllSizesDto[]>> {
+    return await SizeRepository.getAll();
   }
 }

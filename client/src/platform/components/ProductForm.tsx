@@ -83,8 +83,8 @@ export function ProductForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-8 tracking-tight mt-10 pb-24">
-      <div className="sticky top-0 w-2/5 flex-col text-left border-r rounded-lg h-fit pr-10">
+    <form onSubmit={handleSubmit} className="flex md:flex-row flex-col gap-8 tracking-tight mt-10 pb-24">
+      <div className="w-full md:w-2/5 flex-col text-left md:border-r rounded-lg h-fit md:pr-10">
         <h3 className="text-xl sm:text-2xl leading-relaxed font-bold text-gray-800 mb-6">Datos del producto</h3>
 
         <div className="flex flex-col gap-4">
@@ -153,11 +153,11 @@ export function ProductForm() {
         </div>
       </div>
 
-      <div className="flex w-3/5 flex-col text-left">
+      <div className="flex w-full md:w-3/5 flex-col text-left">
         <h3 className="text-xl sm:text-2xl leading-relaxed font-bold text-gray-800 mb-6">Datos de la variante</h3>
 
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div className="flex flex-col">
               <label htmlFor="size_id" className="font-light text-gray-500 text-sm uppercase">
                 Tamaño *
@@ -171,8 +171,8 @@ export function ProductForm() {
               >
                 <option value="">Selecciona una talla</option>
                 {sizes.map((size, index) => (
-                  <option key={index} value={size.id}>
-                    {size.number} <span className="font-light text-sm text-gray-500">({size.centimeters} cm)</span>
+                  <option key={index} value={size.size_id}>
+                    {size.size_number} ({size.size_centimeters} cm)
                   </option>
                 ))}
               </select>
@@ -190,8 +190,8 @@ export function ProductForm() {
               >
                 <option value="">Selecciona un material</option>
                 {materials.map((material, index) => (
-                  <option key={index} value={material.id}>
-                    {material.name}
+                  <option key={index} value={material.material_id}>
+                    {material.material_name}
                   </option>
                 ))}
               </select>
@@ -209,15 +209,15 @@ export function ProductForm() {
               >
                 <option value="">Selecciona un color</option>
                 {colors.map((color, index) => (
-                  <option key={index} value={color.id}>
-                    {color.name}
+                  <option key={index} value={color.color_id}>
+                    {color.color_name}
                   </option>
                 ))}
               </select>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="flex flex-col">
               <label htmlFor="upc" className="font-light text-gray-500 text-sm uppercase">
                 UPC
@@ -226,7 +226,7 @@ export function ProductForm() {
                 type="number"
                 id="upc"
                 name="upc"
-                value={productData.variant.upc || 0}
+                value={productData.variant.upc || ''}
                 onChange={handleVariantChange}
                 className="border border-gray-300 rounded-md px-3 py-2 w-full"
               />
@@ -246,7 +246,7 @@ export function ProductForm() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="flex flex-col">
               <label htmlFor="stock" className="font-light text-gray-500 text-sm uppercase">
                 Stock *
@@ -255,7 +255,7 @@ export function ProductForm() {
                 type="number"
                 id="stock"
                 name="stock"
-                value={productData.variant.stock}
+                value={productData.variant.stock || ''}
                 onChange={handleVariantChange}
                 className="border border-gray-300 rounded-md px-3 py-2 w-full"
               />
@@ -268,13 +268,13 @@ export function ProductForm() {
                 type="number"
                 id="price"
                 name="price"
-                value={productData.variant.price}
+                value={productData.variant.price || ''}
                 onChange={handleVariantChange}
                 className="border border-gray-300 rounded-md px-3 py-2 w-full"
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-5 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
             <div>
               <label htmlFor="images" className="font-light text-gray-500 text-sm uppercase">
                 Imágenes

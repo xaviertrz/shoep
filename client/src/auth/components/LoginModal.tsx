@@ -18,7 +18,7 @@ export function LoginModal() {
     <Modal
       isOpen={isLoginModalOpen}
       onRequestClose={closeLoginModal}
-      className="bg-white rounded-lg text-gray-800 w-full md:w-2/3 lg:w-1/3 outline-none p-10 font-light"
+      className="bg-white rounded-lg text-gray-800 md:w-2/3 lg:w-1/3 outline-none p-10 font-light"
       overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-30"
       closeTimeoutMS={50}
     >

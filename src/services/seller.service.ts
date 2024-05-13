@@ -49,7 +49,7 @@ async function mapToSeller(createSellerDto: CreateSellerDto): Promise<ISeller> {
     password: hashedPassword,
     active: registerDefaults.ACTIVE,
     confirmed: registerDefaults.CONFIRMED,
-    created_at: registerDefaults.CREATED_AT
+    created_at: new Date()
   };
 }
 

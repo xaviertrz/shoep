@@ -7,4 +7,7 @@ export interface IModalState {
   isEditAddressModalOpen: boolean;
   isLoginModalOpen: boolean;
   isAddAddressModalOpen: boolean;
+  isDeletePublicationModalOpen: boolean;
+  isMenuModalOpen: boolean;
+  isSizeTableModalOpen: boolean;
 }

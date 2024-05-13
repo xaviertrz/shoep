@@ -11,7 +11,6 @@ export class BuyerRepository {
   static async create(buyerData: IBuyer): Promise<ResponseDto<BuyerDto>> {
     try {
       const { id, ...createData } = buyerData; // eslint-disable-line @typescript-eslint/no-unused-vars
-      console.log(createData);
       await prisma.users.create({ data: createData });
       const buyerDto = await mapToBuyerDto(buyerData);
       return { success: true, message: 'Usuario creado correctamente', data: buyerDto };
@@ -54,6 +53,7 @@ async function mapToBuyerDto(buyerData: IBuyer): Promise<BuyerDto> {
     email: buyerData.email,
     phone_number: buyerData.phone_number,
     confirmed: buyerData.confirmed,
+    created_at: buyerData.created_at,
     token
   };
 }

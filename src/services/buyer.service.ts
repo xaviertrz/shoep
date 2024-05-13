@@ -34,18 +34,18 @@ export class BuyerService {
   }
 }
 
-async function mapToBuyer(createSellerDto: CreateBuyerDto): Promise<IBuyer> {
-  const username = createSellerDto.name.toUpperCase() + ' ' + createSellerDto.lastname.toUpperCase();
-  const hashedPassword = await bcrypt.hash(createSellerDto.password, 10);
+async function mapToBuyer(createBuyerDto: CreateBuyerDto): Promise<IBuyer> {
+  const username = createBuyerDto.name.toUpperCase() + ' ' + createBuyerDto.lastname.toUpperCase();
+  const hashedPassword = await bcrypt.hash(createBuyerDto.password, 10);
   return {
     uuid: uuidv4(),
     role_id: roleIds.BUYER,
     username,
-    email: createSellerDto.email,
-    phone_number: createSellerDto.phone_number,
+    email: createBuyerDto.email,
+    phone_number: createBuyerDto.phone_number,
     password: hashedPassword,
     active: registerDefaults.ACTIVE,
     confirmed: registerDefaults.CONFIRMED,
-    created_at: registerDefaults.CREATED_AT
+    created_at: new Date()
   };
 }

@@ -9,6 +9,8 @@ import { neighborhoodSlice } from './neighborhood/neighborhoodSlice';
 import { variantSlice } from './variant/variantSlice';
 import { orderSlice } from './orders/orderSlice';
 import { userSlice } from './user/userSlice';
+import { materialSlice } from './material/materialSlice';
+import { quantitySlice } from './product-quantity/quantitySlice';
 
 export const store = configureStore({
   reducer: {
@@ -21,7 +23,9 @@ export const store = configureStore({
     neighborhood: neighborhoodSlice.reducer,
     variant: variantSlice.reducer,
     order: orderSlice.reducer,
-    user: userSlice.reducer
+    user: userSlice.reducer,
+    material: materialSlice.reducer,
+    quantity: quantitySlice.reducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

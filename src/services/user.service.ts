@@ -84,24 +84,6 @@ export class UserService {
       return { success: false, message: 'Error actualizando token' };
     }
   }
-
-  /*   
-  static async update(uuid: string, userData: any): Promise<InternalResponse> {
-    try {
-      const existingUser = await this.getById(uuid);
-      if (existingUser.success) {
-        const updatedUserData: IUser = {
-          ...existingUser.user,
-          ...userData
-        };
-        return await UserRepository.update(uuid, updatedUserData);
-      }
-      return { success: false, message: 'User not found' };
-    } catch (error) {
-      console.log(error);
-      return { success: false, message: 'Error updating user' };
-    }
-  } */
 }
 
 async function mapToDto(user: ISeller | IBuyer): Promise<SellerDto | BuyerDto> {
@@ -114,6 +96,7 @@ async function mapToDto(user: ISeller | IBuyer): Promise<SellerDto | BuyerDto> {
       role_id: user.role_id,
       phone_number: user.phone_number,
       nit: (user as ISeller).nit,
+      created_at: user.created_at,
       mp_access_token: (user as ISeller).mp_access_token,
       mp_refresh_token: (user as ISeller).mp_refresh_token,
       mp_token_expiration_date: (user as ISeller).mp_token_expiration_date,
@@ -126,6 +109,7 @@ async function mapToDto(user: ISeller | IBuyer): Promise<SellerDto | BuyerDto> {
       username: user.username,
       role_id: user.role_id,
       phone_number: user.phone_number,
+      created_at: user.created_at,
       token
     } as BuyerDto;
   }

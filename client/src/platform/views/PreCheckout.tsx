@@ -14,6 +14,7 @@ import { PageTitle } from '../../components/PageTitle';
 import { usePaymentStore } from '../hooks/usePaymentStore';
 import { roleIds } from '../../constants/role-ids';
 import Swal from 'sweetalert2';
+import { useQuantityStore } from '../hooks/useQuantityStore';
 
 export function PreCheckout() {
   const navigate = useNavigate();
@@ -22,7 +23,23 @@ export function PreCheckout() {
   const { variantUuid } = useParams<{ variantUuid: string }>();
   const { active, setActiveVariant } = useVariantStore();
   const { fetchAddressesByUserId, addresses } = useAddressStore();
+  const { quantity } = useQuantityStore();
   const [selectedAddress, setSelectedAddress] = useState<string>('');
+
+  const [checkoutPrice, setCheckoutPrice] = useState<number>(0);
+
+  useEffect(() => {
+    if (active) {
+      setCheckoutPrice(active.price * quantity);
+    }
+  }, [active, quantity]);
+
+  useEffect(() => {
+    if (quantity === 0) {
+      Swal.fire('Error', 'La cantidad de productos debe ser mayor a 0', 'error');
+      navigate(-1);
+    }
+  }, [quantity]);
 
   useEffect(() => {
     if (user?.role_id === roleIds.SELLER) {
@@ -58,7 +75,7 @@ export function PreCheckout() {
       address_id: Number(selectedAddress),
       variant_uuid: active.uuid,
       user_uuid: user!.uuid,
-      quantity: 1
+      quantity
     });
 
     if (response!.success) {
@@ -70,9 +87,9 @@ export function PreCheckout() {
     <Layout>
       <PageTitle title="Comprando" />
 
-      <div className="flex gap-10 pb-16">
+      <div className="flex flex-col lg:flex-row gap-10 pb-16">
         {/* Columna 2: Datos del Producto */}
-        <div className="w-2/3">
+        <div className="w-full lg:w-2/3">
           <div className="w-full">
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
@@ -93,10 +110,14 @@ export function PreCheckout() {
               </thead>
               <tbody className="text-left bg-white divide-y divide-gray-200">
                 <tr>
-                  <td className="py-4 whitespace-nowrap">
+                  <td className="py-4 whitespace-nowrap w-full">
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0">
-                        <img className="rounded-md object-cover h-24" src={active.product_images?.[0]?.source} alt="" />
+                        <img
+                          className="rounded-md object-cover h-24 w-24"
+                          src={active.product_images?.[0]?.source}
+                          alt=""
+                        />
                       </div>
                       <div className="ml-4 text-left">
                         <h1 className="text-lg font-light text-gray-900 mb-4">{active.products.name}</h1>
@@ -120,12 +141,10 @@ export function PreCheckout() {
                       </div>
                     </div>
                   </td>
-                  <td className="py-4 px-2 whitespace-nowrap text-gray-500 font-bold">
-                    ${active.price.toLocaleString('es-CO')}
-                  </td>
-                  <td className="py-4 px-2 whitespace-nowrap text-sm text-gray-500">1</td>
-                  <td className="py-4 px-2 whitespace-nowrap text-gray-500 font-bold">
-                    ${active.price.toLocaleString('es-CO')}
+                  <td className="py-4 px-2 whitespace-nowrap text-gray-500">${active.price.toLocaleString('es-CO')}</td>
+                  <td className="py-4 px-2 whitespace-nowrap text-sm text-gray-500">{quantity}</td>
+                  <td className="py-4 px-2 whitespace-nowrap text-gray-500">
+                    ${checkoutPrice.toLocaleString('es-CO')}
                   </td>
                 </tr>
               </tbody>
@@ -133,7 +152,7 @@ export function PreCheckout() {
           </div>
         </div>
         {/* Columna 1: Datos del Comprador */}
-        <div className="w-1/3 p-4 rounded-md bg-gray-100">
+        <div className="w-full lg:w-1/3 p-4 rounded-md bg-gray-100">
           <div className="pb-4 border-b border-gray-400 text-left flex justify-between">
             <h2 className="text-xl font-light">Factura</h2>
             <h2 className="font-serif font-bold text-xl tracking-tighter lowercase underline decoration underline-offset-4">
@@ -180,8 +199,10 @@ export function PreCheckout() {
               Agregar domicilio
             </Link>
             <div className="mt-4 pt-2 border-t border-gray-400 text-left flex items-center justify-between">
-              <p className="uppercase font-base text-lg">TOTAL</p>
-              <span className="uppercase font-medium text-xl">${active.price.toLocaleString('es-CO')}</span>
+              <p className="font-base text-lg font-semibold">Total</p>
+              <span className="uppercase font-medium text-xl">
+                <span className="font-light text-xs mr-2">COP</span>${checkoutPrice.toLocaleString('es-CO')}
+              </span>
             </div>
             <button
               type="submit"

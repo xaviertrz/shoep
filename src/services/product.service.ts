@@ -30,6 +30,15 @@ export class ProductService {
     }
   }
 
+  static async block(uuid: string): Promise<ResponseDto<void>> {
+    try {
+      return await ProductRepository.block(uuid);
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: 'Error bloqueando producto' };
+    }
+  }
+
   static async createVariant(productVariantDto: ProductVariantDto): Promise<ResponseDto<IProductVariant>> {
     try {
       const variantData = mapToVariant(productVariantDto);
@@ -144,6 +153,33 @@ export class ProductService {
     }
   }
 
+  static async getAllByMaterialId(material_id: number, page: Page): Promise<any> {
+    const perPage = Constants.RECORDS_PER_PAGE;
+    try {
+      return await ProductRepository.getAllByMaterialId(material_id, page.getValue(), perPage);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  static async getAllByColorld(color_id: number, page: Page): Promise<any> {
+    const perPage = Constants.RECORDS_PER_PAGE;
+    try {
+      return await ProductRepository.getAllByColorId(color_id, page.getValue(), perPage);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  static async getAllBySizeld(size_id: number, page: Page): Promise<any> {
+    const perPage = Constants.RECORDS_PER_PAGE;
+    try {
+      return await ProductRepository.getAllBySizesId(size_id, page.getValue(), perPage);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   static async updateProduct(uuid: string, productData: any, jwt: JwtDto): Promise<ResponseDto<void>> {
     try {
       const existingProduct = await this.getOnlyProductDataById(uuid);
@@ -209,8 +245,9 @@ function mapToProduct(createProductDto: CreateProductDto): IProduct {
     name: createProductDto.name,
     brand: createProductDto.brand,
     description: createProductDto.description,
+    blocked: registerDefaults.BLOCKED,
     active: registerDefaults.ACTIVE,
-    created_at: registerDefaults.CREATED_AT
+    created_at: new Date(),
   };
 }
 
@@ -226,6 +263,6 @@ function mapToVariant(createProductVariantDto: ProductVariantDto): IProductVaria
     stock: createProductVariantDto.stock,
     price: createProductVariantDto.price,
     active: registerDefaults.ACTIVE,
-    created_at: registerDefaults.CREATED_AT
+    created_at: new Date(),
   };
 }

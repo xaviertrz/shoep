@@ -58,7 +58,7 @@ export function EditVariantModal() {
     <Modal
       isOpen={isEditVariantModalOpen}
       onRequestClose={closeEditVariantModal}
-      className="sticky top-0 w-2/5 flex-col p-8 text-left border rounded-lg bg-white"
+      className="sticky top-0 w-4/5 md:w-2/5 flex-col p-8 text-left border rounded-lg bg-white"
       overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-30"
       closeTimeoutMS={50}
     >
@@ -78,7 +78,7 @@ export function EditVariantModal() {
           </button>
         </div>
 
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div className="flex flex-col">
             <label htmlFor="size_id" className="font-light text-gray-500 text-sm uppercase mb-1">
               Tamaño
@@ -92,8 +92,8 @@ export function EditVariantModal() {
               required
             >
               {sizes.map((size, index) => (
-                <option key={index} value={size.id}>
-                  {size.number}
+                <option key={index} value={size.size_id}>
+                  {size.size_number} ({size.size_centimeters} cm)
                 </option>
               ))}
             </select>
@@ -111,8 +111,8 @@ export function EditVariantModal() {
               required
             >
               {materials.map((material, index) => (
-                <option key={index} value={material.id}>
-                  {material.name}
+                <option key={index} value={material.material_id}>
+                  {material.material_name}
                 </option>
               ))}
             </select>
@@ -130,15 +130,15 @@ export function EditVariantModal() {
               required
             >
               {colors.map((color, index) => (
-                <option key={index} value={color.id}>
-                  {color.name}
+                <option key={index} value={color.color_id}>
+                  {color.color_name}
                 </option>
               ))}
             </select>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="flex flex-col">
             <label htmlFor="upc" className="font-light text-gray-500 text-sm uppercase mb-1">
               UPC
@@ -147,7 +147,7 @@ export function EditVariantModal() {
               type="number"
               id="upc"
               name="upc"
-              value={variantForm.upc || 0}
+              value={variantForm.upc || ''}
               onChange={e => setVariantForm({ ...variantForm, upc: Number(e.target.value) })}
               className="border border-gray-300 rounded-md px-3 py-2 w-full"
             />
@@ -166,7 +166,7 @@ export function EditVariantModal() {
             />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="flex flex-col">
             <label htmlFor="stock" className="font-light text-gray-500 text-sm uppercase mb-1">
               Stock
@@ -175,7 +175,7 @@ export function EditVariantModal() {
               type="number"
               id="stock"
               name="stock"
-              value={variantForm.stock}
+              value={variantForm.stock === 0 ? '' : variantForm.stock}
               onChange={e => setVariantForm({ ...variantForm, stock: Number(e.target.value) })}
               className="border border-gray-300 rounded-md px-3 py-2 w-full"
               required

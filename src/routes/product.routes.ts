@@ -14,11 +14,24 @@ router.get('/v1/products/by-seller-uuid/:sellerUuid', (req: Request, res: Respon
 router.get('/v1/products/by-category/:categoryId', (req: Request, res: Response) =>
   ProductController.getAllByCategoryId(req, res)
 );
+router.get('/v1/products/by-material/:materialId', (req: Request, res: Response) =>
+  ProductController.getAllByMaterialId(req, res)
+);
+router.get('/v1/products/by-size/:sizeId', (req: Request, res: Response) => ProductController.getAllBySizeId(req, res));
+router.get('/v1/products/by-color/:colorId', (req: Request, res: Response) =>
+  ProductController.getAllByColorId(req, res)
+);
 router.post('/v1/products', validateJwt, validateRole(roleIds.SELLER), (req: Request, res: Response) =>
   ProductController.create(req, res)
 );
 router.put('/v1/products/:productUuid', validateJwt, validateRole(roleIds.SELLER), (req: Request, res: Response) =>
   ProductController.updateProduct(req, res)
+);
+router.patch(
+  '/v1/products/block/:productUuid',
+  validateJwt,
+  validateRole(roleIds.ADMIN),
+  (req: Request, res: Response) => ProductController.block(req, res)
 );
 
 /* Product Variant Routes */

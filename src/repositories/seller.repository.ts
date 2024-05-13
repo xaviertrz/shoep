@@ -55,6 +55,7 @@ async function mapToSellerDto(sellerData: ISeller): Promise<SellerDto> {
     nit: sellerData.nit,
     phone_number: sellerData.phone_number,
     confirmed: sellerData.confirmed,
+    created_at: sellerData.created_at,
     mp_access_token: sellerData.mp_access_token,
     mp_refresh_token: sellerData.mp_refresh_token,
     mp_token_expiration_date: sellerData.mp_token_expiration_date,

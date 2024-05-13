@@ -45,6 +45,23 @@ export class ProductRepository {
     }
   }
 
+  static async block(uuid: string): Promise<ResponseDto<void>> {
+    try {
+      const response = await this.getById(uuid);
+      if (response.success) {
+        await prisma.products.update({
+          where: { uuid: uuid },
+          data: { blocked: true }
+        });
+        return { success: true, message: 'Producto bloqueado correctamente' };
+      }
+      return response;
+    } catch (error) {
+      console.log(error);
+      return { success: false, message: 'Error bloqueando producto' };
+    }
+  }
+
   static async deleteVariant(uuid: string): Promise<ResponseDto<IVariant>> {
     try {
       const response = await this.getVariantById(uuid);
@@ -286,7 +303,8 @@ export class ProductRepository {
         },
         where: {
           category_id: categoryId,
-          active: true
+          active: true,
+          blocked: false
         },
         skip,
         take: perPage
@@ -303,6 +321,165 @@ export class ProductRepository {
     } catch (error) {
       console.error(error);
       return { success: false, message: 'Error consultando productos' };
+    }
+  }
+
+  static async getAllByMaterialId(materialId: number, page: number, perPage: number): Promise<any> {
+    try {
+      const skip = (page - 1) * perPage;
+      const products = await prisma.products.findMany({
+        include: {
+          product_variants: {
+            include: {
+              product_images: {
+                where: { active: true }
+              }
+            }
+          },
+          users: {
+            select: {
+              uuid: true,
+              role_id: true,
+              username: true,
+              email: true,
+              phone_number: true,
+              confirmed: true,
+              nit: true
+            }
+          }
+        },
+        where: {
+          product_variants: {
+            some: {
+              product_materials: {
+                id: materialId
+              },
+              active: true
+            }
+          },
+          blocked: false
+        },
+        skip,
+        take: perPage
+      });
+
+      /* const productsDto = products.map(product => {
+        const mappedUser = mapToSellerDto(product.users);
+        return { ...product, users: mappedUser };
+      }); */
+
+      return { success: true, data: products };
+
+      /* return { success: true, message: 'No hay productos para consultar' }; */
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: 'Error consultando productos por material' };
+    }
+  }
+
+  static async getAllByColorId(colorId: number, page: number, perPage: number): Promise<any> {
+    try {
+      const skip = (page - 1) * perPage;
+      const products = await prisma.products.findMany({
+        include: {
+          product_variants: {
+            include: {
+              product_images: {
+                where: { active: true }
+              }
+            }
+          },
+          users: {
+            select: {
+              uuid: true,
+              role_id: true,
+              username: true,
+              email: true,
+              phone_number: true,
+              confirmed: true,
+              nit: true
+            }
+          }
+        },
+        where: {
+          product_variants: {
+            some: {
+              product_colors: {
+                id: colorId
+              },
+              active: true
+            }
+          },
+          blocked: false
+        },
+        skip,
+        take: perPage
+      });
+
+      /* const productsDto = products.map(product => {
+        const mappedUser = mapToSellerDto(product.users);
+        return { ...product, users: mappedUser };
+      }); */
+
+      return { success: true, data: products };
+
+      /* return { success: true, message: 'No hay productos para consultar' }; */
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: 'Error consultando productos por color' };
+    }
+  }
+
+  static async getAllBySizesId(sizeId: number, page: number, perPage: number): Promise<any> {
+    try {
+      const skip = (page - 1) * perPage;
+      const products = await prisma.products.findMany({
+        include: {
+          product_variants: {
+            include: {
+              product_images: {
+                where: { active: true }
+              }
+            }
+          },
+          users: {
+            select: {
+              uuid: true,
+              role_id: true,
+              username: true,
+              email: true,
+              phone_number: true,
+              confirmed: true,
+              nit: true
+            }
+          }
+        },
+        where: {
+          product_variants: {
+            some: {
+              product_sizes: {
+                id: sizeId
+              },
+              active: true
+            }
+          },
+          blocked: false
+        },
+        skip,
+        take: perPage
+      });
+
+      /* const productsDto = products.map(product => {
+        const mappedUser = mapToSellerDto(product.users);
+        return { ...product, users: mappedUser };
+      }); */
+
+      return { success: true, data: products };
+
+      /* return { success: true, message: 'No hay productos para consultar' }; */
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: 'Error consultando productos por talla' };
     }
   }
 

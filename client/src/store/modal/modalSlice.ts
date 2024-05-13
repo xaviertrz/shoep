@@ -29,6 +29,21 @@ export const modalSlice = createSlice({
     onOpenAddAddressModal: state => {
       state.isAddAddressModalOpen = true;
     },
+    onOpenDeletePublicationModal: state => {
+      state.isDeletePublicationModalOpen = true;
+    },
+    onOpenMenuModal: state => {
+      state.isMenuModalOpen = true;
+    },
+    onOpenSizeTableModal: state => {
+      state.isSizeTableModalOpen = true;
+    },
+    onCloseSizeTableModal: state => {
+      state.isSizeTableModalOpen = false;
+    },
+    onCloseMenuModal: state => {
+      state.isMenuModalOpen = false;
+    },
     onCloseEditProductModal: state => {
       state.isEditProductModalOpen = false;
     },
@@ -52,6 +67,9 @@ export const modalSlice = createSlice({
     },
     onCloseAddAddressModal: state => {
       state.isAddAddressModalOpen = false;
+    },
+    onCloseDeletePublicationModal: state => {
+      state.isDeletePublicationModalOpen = false;
     }
   }
 });
@@ -65,6 +83,11 @@ export const {
   onOpenEditAddressModal,
   onOpenLoginModal,
   onOpenAddAddressModal,
+  onOpenDeletePublicationModal,
+  onOpenMenuModal,
+  onOpenSizeTableModal,
+  onCloseSizeTableModal,
+  onCloseMenuModal,
   onCloseEditProductModal,
   onCloseEditVariantModal,
   onCloseAddVariantModal,
@@ -72,6 +95,7 @@ export const {
   onCloseImageManagerModal,
   onCloseEditAddressModal,
   onCloseLoginModal,
-  onCloseAddAddressModal
+  onCloseAddAddressModal,
+  onCloseDeletePublicationModal
 } = modalSlice.actions;
 export default modalSlice.reducer;

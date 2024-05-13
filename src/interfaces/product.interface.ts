@@ -7,6 +7,7 @@ export interface IProduct {
   brand: string;
   description?: string | null;
   active: boolean;
+  blocked: boolean;
   created_at: Date | string;
   modified_at?: Date | string | null;
   deleted_at?: Date | string | null;

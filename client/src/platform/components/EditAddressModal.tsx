@@ -51,7 +51,7 @@ export function EditAddressModal() {
     <Modal
       isOpen={isEditAddressModalOpen}
       onRequestClose={closeEditAddressModal}
-      className="sticky top-0 w-2/5 flex-col p-8 text-left border rounded-lg bg-white"
+      className="sticky top-0 w-4/5 flex-col p-8 text-left border rounded-lg bg-white"
       overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-30"
       closeTimeoutMS={50}
     >
@@ -96,7 +96,7 @@ export function EditAddressModal() {
             onChange={e => setAddressForm({ ...addressForm, address_line2: e.target.value })}
           />
         </div>
-        <div className="grid grid-cols-2 gap-5 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
           <div className="flex flex-col">
             <label htmlFor="neighborhood_id" className="font-light text-gray-500 text-sm uppercase mb-1">
               Barrio *

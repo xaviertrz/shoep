@@ -4,7 +4,8 @@ import { Layout } from '../../components/Layout';
 import { PageTitle } from '../../components/PageTitle';
 import { useUserStore } from '../hooks/useUserStore';
 
-import { PiUserRectangleDuotone } from 'react-icons/pi';
+import { FiUser } from 'react-icons/fi';
+import { roleIds } from '../../constants/role-ids';
 
 export function Profile() {
   const { userUuid } = useParams();
@@ -19,12 +20,20 @@ export function Profile() {
   return (
     <Layout>
       <PageTitle title="Perfil" />
-      <div className="text-left flex gap-6 items-center justify-center  pb-44">
-        <div className="pr-4 border-r border-gray-300 items-start">
-          <PiUserRectangleDuotone size={150} className="" />
-        </div>
-        <div className="grid grid-cols-2 gap-10">
+      <div className="mt-10 text-left flex flex-col border-4 rounded-xl p-6 md:flex-row gap-6 justify-start items-start mb-44 w-fit">
+        <FiUser className="text-6xl text-gray-500" />
+        <div className="grid grid-cols-1 gap-4">
           <div className="flex flex-col gap-4">
+            <div>
+              <p className="font-light text-gray-500 text-sm uppercase">Usuario</p>
+              <p className="text-gray-600 font-semibold text-base -mt-1 uppercase">
+                {user.role_id === roleIds.BUYER
+                  ? 'Comprador'
+                  : user.role_id === roleIds.SELLER
+                    ? 'Vendedor'
+                    : 'Administrador'}
+              </p>
+            </div>
             <div>
               <p className="font-light text-gray-500 text-sm uppercase">Nombre</p>
               <p className="text-gray-600 font-semibold text-base -mt-1">{user.username}</p>
@@ -45,6 +54,10 @@ export function Profile() {
                 <p className="text-gray-600 font-semibold text-base -mt-1">{user.nit}</p>
               </div>
             )}
+          </div>
+          <div>
+            <p className="font-light text-gray-500 text-sm uppercase">Creado</p>
+            <p className="text-gray-600 font-semibold text-base -mt-1">{user.created_at.toString().split('T')[0]}</p>
           </div>
         </div>
       </div>

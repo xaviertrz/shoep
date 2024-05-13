@@ -11,6 +11,7 @@ export interface IProduct {
   created_at: string;
   modified_at: string | null;
   brand: string;
+  blocked: boolean;
   deleted_at: string | null;
   active: boolean;
   product_variants: IProductVariant[];

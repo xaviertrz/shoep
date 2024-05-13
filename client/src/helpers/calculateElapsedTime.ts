@@ -1,4 +1,8 @@
-export function calculateElapsedTime(fromDate: Date): string {
+export function calculateElapsedTime(fromDate?: Date): string {
+  if (!fromDate) {
+    return 'Nunca';
+  }
+
   const now: Date = new Date();
   const differenceInMilliseconds: number = now.getTime() - fromDate.getTime();
 

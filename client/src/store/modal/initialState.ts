@@ -8,5 +8,8 @@ export const initialState: IModalState = {
   isImageManagerModalOpen: false,
   isEditAddressModalOpen: false,
   isLoginModalOpen: false,
-  isAddAddressModalOpen: false
+  isAddAddressModalOpen: false,
+  isDeletePublicationModalOpen: false,
+  isMenuModalOpen: false,
+  isSizeTableModalOpen: false
 };

@@ -17,7 +17,7 @@ export function Footer() {
   return (
     <footer className="flex px-4 lg:px-8 text-sm pb-12">
       <div
-        className={`grid  border-t w-full pt-10 pb-5 ${status === 'not-authenticated' ? 'grid-cols-5' : 'grid-cols-4'}`}
+        className={`grid gap-10 md:gap-0 border-t w-full pt-10 pb-5 ${status === 'not-authenticated' ? 'md:grid-cols-5 grid-cols-3' : 'md:grid-cols-4 grid-cols-2'}`}
       >
         <div className="flex flex-col text-left font-light uppercase">
           <span className="font-normal pb-4">Calzado</span>
@@ -67,7 +67,7 @@ export function Footer() {
           <span className="font-normal pb-4">Atención al cliente</span>
           <ul className="flex flex-col gap-3">
             <li>
-              <Link to="/" className="hover:text-gray-500 transition-all duration-200">
+              <Link to="/terminos-y-condiciones" className="hover:text-gray-500 transition-all duration-200">
                 Menciones legales
               </Link>
             </li>

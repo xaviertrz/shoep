@@ -5,6 +5,7 @@ import Router from 'express-promise-router';
 import * as http from 'http';
 import cors from 'cors';
 import userRoutes from './routes/user.routes';
+import adminRoutes from './routes/admin.routes';
 import buyerRoutes from './routes/buyer.routes';
 import sellerRoutes from './routes/seller.routes';
 import productRoutes from './routes/product.routes';
@@ -21,6 +22,7 @@ import healthRoute from './routes/health.route';
 import { HttpResponseCodes } from './shared/HttpResponseCodes';
 import path from 'path';
 import './polyfills';
+
 export class Server {
   private express: express.Express;
   readonly port: string;
@@ -37,6 +39,7 @@ export class Server {
     router.use(errorHandler());
     this.express.use(healthRoute);
     this.express.use(userRoutes);
+    this.express.use(adminRoutes);
     this.express.use(buyerRoutes);
     this.express.use(sellerRoutes);
     this.express.use(productRoutes);

@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/config';
 import { ResponseDto } from '../../dtos/ResponseDto';
 import { onSetColors, onSetMaterials, onSetSizes } from '../../store/product-options/productOptionsSlice';
-import { IMaterial } from '../../interfaces/IMaterial';
-import { IColor } from '../../interfaces/IColor';
-import { ISize } from '../../interfaces/ISize';
 import { useCategoryStore } from './useCategoryStore';
 import { ENV } from '../../env';
+import { GetAllMaterialsDto } from '../../dtos/GetAllMaterialsDto';
+import { GetAllColorsDto } from '../../dtos/GetAllColorsDto';
+import { GetAllSizesDto } from '../../dtos/GetAllSizesDto';
 
 export function useProductOptionsStore() {
   const { fetchCategories } = useCategoryStore();
@@ -26,9 +26,9 @@ export function useProductOptionsStore() {
         fetchCategories()
       ]);
 
-      const materialsData: ResponseDto<IMaterial[]> = await materialsResponse.json();
-      const colorsData: ResponseDto<IColor[]> = await colorsResponse.json();
-      const sizesData: ResponseDto<ISize[]> = await sizesResponse.json();
+      const materialsData: ResponseDto<GetAllMaterialsDto[]> = await materialsResponse.json();
+      const colorsData: ResponseDto<GetAllColorsDto[]> = await colorsResponse.json();
+      const sizesData: ResponseDto<GetAllSizesDto[]> = await sizesResponse.json();
 
       dispatch(onSetMaterials(materialsData.success ? materialsData.data! : []));
       dispatch(onSetColors(colorsData.success ? colorsData.data! : []));

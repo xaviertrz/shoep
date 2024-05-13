@@ -2,17 +2,19 @@ import { Link } from 'react-router-dom';
 import { LoginModal } from '../auth/components/LoginModal';
 
 export function MenuButtons({
-  buttons
+  buttons,
+  style
 }: {
   buttons: { label?: string; link?: string; action?: () => Promise<void> | void }[];
+  style?: string;
 }) {
   return (
-    <ul className="flex items-center list-none p-0">
+    <ul className={`flex  list-none p-0 ${style}`}>
       {buttons.map(({ label, link, action }) => (
         <li key={label}>
           <Link
             onClick={action}
-            className="uppercase font-light px-2 text-gray-500 hover:text-black transition-all duration-200"
+            className="uppercase block font-light px-2 text-gray-500 hover:text-black transition-all duration-200"
             to={link || ''}
           >
             {label}

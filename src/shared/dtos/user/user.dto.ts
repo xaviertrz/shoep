@@ -5,4 +5,5 @@ export interface UserDto {
   email: string;
   phone_number: bigint;
   confirmed: boolean;
+  created_at: Date;
 }

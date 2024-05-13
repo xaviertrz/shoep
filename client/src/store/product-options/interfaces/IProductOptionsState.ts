@@ -1,9 +1,9 @@
-import { IColor } from '../../../interfaces/IColor';
-import { IMaterial } from '../../../interfaces/IMaterial';
-import { ISize } from '../../../interfaces/ISize';
+import { GetAllColorsDto } from '../../../dtos/GetAllColorsDto';
+import { GetAllMaterialsDto } from '../../../dtos/GetAllMaterialsDto';
+import { GetAllSizesDto } from '../../../dtos/GetAllSizesDto';
 
 export interface IProductOptionsState {
-  materials: IMaterial[];
-  colors: IColor[];
-  sizes: ISize[];
+  materials: GetAllMaterialsDto[];
+  colors: GetAllColorsDto[];
+  sizes: GetAllSizesDto[];
 }

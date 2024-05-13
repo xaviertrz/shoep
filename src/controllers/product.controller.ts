@@ -62,6 +62,21 @@ export class ProductController {
     }
   }
 
+  static async block(req: Request, res: Response) {
+    try {
+      const product_uuid = new Uuid(req.params.productUuid);
+      const response = await ProductService.block(product_uuid.getValue());
+      if (response.success) {
+        res.status(HttpResponseCodes.OK).json(response);
+      } else {
+        res.status(HttpResponseCodes.BAD_REQUEST).json(response);
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: 'Internal server error' });
+    }
+  }
+
   static async createVariant(req: Request, res: Response) {
     try {
       const variantDto: ProductVariantDto = req.body;
@@ -167,6 +182,69 @@ export class ProductController {
       const pageParam = req.query.page;
       const page = new Page(parseInt(pageParam as string) || 1);
       const response = await ProductService.getAllByCategoryId(category_id.getValue(), page);
+      if (response.success) {
+        res.status(HttpResponseCodes.OK).json(response);
+      } else {
+        res.status(HttpResponseCodes.BAD_REQUEST).json(response);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error instanceof ValueObjectException) {
+        res.status(HttpResponseCodes.BAD_REQUEST).json({ success: false, message: error.message });
+      } else {
+        res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: 'Internal server error' });
+      }
+    }
+  }
+
+  static async getAllByMaterialId(req: Request, res: Response) {
+    try {
+      const material_id = new MaterialId(parseInt(req.params.materialId));
+      const pageParam = req.query.page;
+      const page = new Page(parseInt(pageParam as string) || 1);
+      const response = await ProductService.getAllByMaterialId(material_id.getValue(), page);
+      if (response.success) {
+        res.status(HttpResponseCodes.OK).json(response);
+      } else {
+        res.status(HttpResponseCodes.BAD_REQUEST).json(response);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error instanceof ValueObjectException) {
+        res.status(HttpResponseCodes.BAD_REQUEST).json({ success: false, message: error.message });
+      } else {
+        res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: 'Internal server error' });
+      }
+    }
+  }
+
+  static async getAllByColorId(req: Request, res: Response) {
+    try {
+      const color_id = new ColorId(parseInt(req.params.colorId));
+      const pageParam = req.query.page;
+      const page = new Page(parseInt(pageParam as string) || 1);
+      const response = await ProductService.getAllByColorld(color_id.getValue(), page);
+      if (response.success) {
+        res.status(HttpResponseCodes.OK).json(response);
+      } else {
+        res.status(HttpResponseCodes.BAD_REQUEST).json(response);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error instanceof ValueObjectException) {
+        res.status(HttpResponseCodes.BAD_REQUEST).json({ success: false, message: error.message });
+      } else {
+        res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: 'Internal server error' });
+      }
+    }
+  }
+
+  static async getAllBySizeId(req: Request, res: Response) {
+    try {
+      const size_id = new SizeId(parseInt(req.params.sizeId));
+      const pageParam = req.query.page;
+      const page = new Page(parseInt(pageParam as string) || 1);
+      const response = await ProductService.getAllBySizeld(size_id.getValue(), page);
       if (response.success) {
         res.status(HttpResponseCodes.OK).json(response);
       } else {
