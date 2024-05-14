@@ -22,12 +22,14 @@ import healthRoute from './routes/health.route';
 import { HttpResponseCodes } from './shared/HttpResponseCodes';
 import path from 'path';
 import './polyfills';
+import fs from 'fs';
 
 export class Server {
   private express: express.Express;
   readonly port: string;
   httpServer?: http.Server;
-  private staticPath: string = '../client/dist';
+  private staticPath: string = './client/dist';
+  private basePath: string = './';
 
   constructor(port: string) {
     this.port = port;
@@ -53,11 +55,22 @@ export class Server {
     this.express.use(addressRoutes);
     this.express.use(neighborhoodRoutes);
     this.express.use(orderRoutes);
-    this.express.use(express.static(path.join(__dirname, this.staticPath)));
-    this.express.use('/public/images/', express.static(path.join(__dirname, '../public/images/')));
+    this.express.use(express.static(path.join(this.basePath, this.staticPath)));
+    this.express.use('/public/images/', express.static(path.join(this.basePath, './public/images/')));
     this.express.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, this.staticPath, 'index.html'));
+      try {
+        // Read index.html file synchronously
+        const data = fs.readFileSync(path.join(this.basePath, this.staticPath, 'index.html'), 'utf8');
+        // Send the contents of index.html as the response
+        res.send(data);
+      } catch (err) {
+        console.error('Error reading index.html:', err);
+        res.status(500).send('Internal Server Error');
+      }
     });
+    /*     this.express.get('*', (req, res) => {
+      res.redirect('/');
+    }); */
     router.use((err: Error, req: Request, res: Response) => {
       console.log(err);
       res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).send(err.message);
