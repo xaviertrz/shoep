@@ -41,7 +41,7 @@ export class MpService {
         client_secret: this.test_client_secret,
         code,
         grant_type,
-        redirect_uri: `${host}${this.redirect_uri}`,
+        redirect_uri: `https://${host}${this.redirect_uri}`,
         test_token: this.test_token
       })
     });
