@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    /* "module": "ESNext",
-    "target": "ESNext", */
     "target": "es6",                      
     "module": "commonjs",                 
     "strict": true,                       
