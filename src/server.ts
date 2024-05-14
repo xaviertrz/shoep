@@ -24,6 +24,28 @@ import path from 'path';
 import './polyfills';
 import fs from 'fs';
 
+function printFileTree(dir: string, prefix: string = ''): void {
+  const files = fs.readdirSync(dir);
+
+  files.forEach(file => {
+    if (file === 'node_modules') {
+      return; // Skip the 'node_modules' directory
+    }
+
+    const filePath = path.join(dir, file);
+    const stats = fs.statSync(filePath);
+
+    if (stats.isDirectory()) {
+      console.log(`${prefix}├── ${file}/`);
+      printFileTree(filePath, `${prefix}│   `);
+    } else {
+      console.log(`${prefix}├── ${file}`);
+    }
+  });
+}
+
+printFileTree('./');
+
 export class Server {
   private express: express.Express;
   readonly port: string;
@@ -55,6 +77,7 @@ export class Server {
     this.express.use(addressRoutes);
     this.express.use(neighborhoodRoutes);
     this.express.use(orderRoutes);
+
     this.express.use(express.static(path.join(this.basePath, this.staticPath)));
     this.express.use('/public/images/', express.static(path.join(this.basePath, '/public/images/')));
     this.express.get('*', (req, res) => {
