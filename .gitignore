@@ -5,7 +5,3 @@ logs/
 data
 test-results.xml
 .env
-client/
-client/.env
-client/node_modules/
-client/dist/

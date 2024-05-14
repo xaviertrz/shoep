@@ -1,7 +1,8 @@
-runtime: nodejs20
+runtime: custom
+
+env: flex
 
 env_variables:
-  PORT: ${PORT}
   ADMIN_KEY: ${ADMIN_KEY}
   DATABASE_URL: ${DATABASE_URL}
   DEV_DATABASE_URL: ${DEV_DATABASE_URL}
