@@ -78,12 +78,12 @@ export class Server {
     this.express.use(neighborhoodRoutes);
     this.express.use(orderRoutes);
 
-    this.express.use(express.static(path.join(this.basePath, this.staticPath)));
+    this.express.use(express.static(path.join(this.basePath, '/assets', this.staticPath)));
     this.express.use('/public/images/', express.static(path.join(this.basePath, '/public/images/')));
     this.express.get('*', (req, res) => {
       try {
         // Read index.html file synchronously
-        const data = fs.readFileSync(path.join(this.basePath, this.staticPath, 'index.html'), 'utf8');
+        const data = fs.readFileSync(path.join(this.basePath, this.staticPath, '/assets', 'index.html'), 'utf8');
         // Send the contents of index.html as the response
         res.send(data);
       } catch (err) {
