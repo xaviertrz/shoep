@@ -27,6 +27,7 @@ export class Server {
   private express: express.Express;
   readonly port: string;
   httpServer?: http.Server;
+  private staticPath: string = '../client/dist';
 
   constructor(port: string) {
     this.port = port;
@@ -52,10 +53,10 @@ export class Server {
     this.express.use(addressRoutes);
     this.express.use(neighborhoodRoutes);
     this.express.use(orderRoutes);
-    this.express.use(express.static(path.join(__dirname, '../public')));
+    this.express.use(express.static(path.join(__dirname, this.staticPath)));
     this.express.use('/public/images/', express.static(path.join(__dirname, '../public/images/')));
     this.express.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../public', 'index.html'));
+      res.sendFile(path.join(__dirname, this.staticPath, 'index.html'));
     });
     router.use((err: Error, req: Request, res: Response) => {
       console.log(err);
