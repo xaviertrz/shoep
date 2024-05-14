@@ -47,7 +47,8 @@ export class MpService {
     });
 
     const data = await response.json();
-    console.log(data);
+    const redirect = `${host}${this.redirect_uri}`;
+    console.log({ data, redirect });
     if (data?.access_token) {
       return await MpRepository.storeToken(user_uuid, data);
     }
