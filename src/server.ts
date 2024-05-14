@@ -83,7 +83,7 @@ export class Server {
     this.express.get('*', (req, res) => {
       try {
         // Read index.html file synchronously
-        const data = fs.readFileSync(path.join(this.basePath, this.staticPath, '/assets', 'index.html'), 'utf8');
+        const data = fs.readFileSync(path.join(this.basePath, this.staticPath, 'index.html'), 'utf8');
         // Send the contents of index.html as the response
         res.send(data);
       } catch (err) {
