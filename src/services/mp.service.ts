@@ -47,8 +47,6 @@ export class MpService {
     });
 
     const data = await response.json();
-    const redirect = `https://${host}${this.redirect_uri}`;
-    console.log({ data, redirect });
     if (data?.access_token) {
       return await MpRepository.storeToken(user_uuid, data);
     }
@@ -109,7 +107,6 @@ export class MpService {
         },
         external_reference: orderData.user_uuid,
         notification_url: `${host}/v1/payments`,
-        marketplace_fee: 0.05,
         auto_return: 'all',
         back_urls: {
           success: `${host}/pagos/exitoso`,
