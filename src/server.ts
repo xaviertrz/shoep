@@ -28,8 +28,8 @@ export class Server {
   private express: express.Express;
   readonly port: string;
   httpServer?: http.Server;
-  private staticPath: string = './client/dist';
-  private basePath: string = './';
+  private staticPath: string = '../client/dist';
+  private basePath: string = __dirname;
 
   constructor(port: string) {
     this.port = port;
@@ -56,7 +56,7 @@ export class Server {
     this.express.use(neighborhoodRoutes);
     this.express.use(orderRoutes);
     this.express.use(express.static(path.join(this.basePath, this.staticPath)));
-    this.express.use('/public/images/', express.static(path.join(this.basePath, './public/images/')));
+    this.express.use('/public/images/', express.static(path.join(this.basePath, '/public/images/')));
     this.express.get('*', (req, res) => {
       try {
         // Read index.html file synchronously
