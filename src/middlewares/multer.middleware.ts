@@ -8,8 +8,8 @@ const storage = multer.diskStorage({
     const isValid = FILE_TYPES[file.mimetype];
     let uploadError: Error | null = new Error('El tipo de imagen no es válido');
     if (isValid) uploadError = null;
-    cb(uploadError, path.join(__dirname, '../../../public/images/')); // Directorio donde se guardarán las imágenes
-    console.log(path.join(__dirname, '../../../public/images/'));
+    cb(uploadError, path.join(__dirname, '../../public/images/')); // Directorio donde se guardarán las imágenes
+    console.log(path.join(__dirname, '../../public/images/'));
   },
   filename: function (req, file, cb) {
     const fileName = file.originalname.split(' ').join('-');

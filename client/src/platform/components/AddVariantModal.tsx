@@ -112,6 +112,7 @@ export function AddVariantModal() {
               value={variantForm.size_id}
               onChange={handleChange}
               className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              required
             >
               <option value="">Seleccionar Tamaño</option>
               {sizes.map((size, index) => (
@@ -131,6 +132,7 @@ export function AddVariantModal() {
               value={variantForm.material_id}
               onChange={handleChange}
               className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              required
             >
               <option value="">Seleccionar Material</option>
               {materials.map((material, index) => (
@@ -150,6 +152,7 @@ export function AddVariantModal() {
               value={variantForm.color_id}
               onChange={handleChange}
               className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              required
             >
               <option value="">Seleccionar Color</option>
               {colors.map((color, index) => (
@@ -173,6 +176,7 @@ export function AddVariantModal() {
               value={variantForm.stock || ''}
               onChange={handleChange}
               className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -186,6 +190,7 @@ export function AddVariantModal() {
               value={variantForm.price || ''}
               onChange={handleChange}
               className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              required
             />
           </div>
         </div>

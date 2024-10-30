@@ -10,13 +10,12 @@ import { TfiInfoAlt } from 'react-icons/tfi';
 import { SiMercadopago } from 'react-icons/si';
 import { VscLinkExternal } from 'react-icons/vsc';
 import { useProductStore } from '../hooks/useProductStore';
-import { ENV } from '../../env';
 
 export function MyProducts() {
-  const url = ENV.PROD;
+  const url = 'https://represent-methods-protect-recently.trycloudflare.com'
   const { user, logout } = useAuthStore() as { user: ISeller; logout: () => void };
   const { fetchProductsBySellerUuid } = useProductStore();
-  const redirect_uri = `${url}/mercado_pago_redirect`;
+  const redirect_uri = `${url}/v1/mercado_pago_redirect`;
   const mp_auth_uri = `https://auth.mercadopago.com/authorization?client_id=${import.meta.env.VITE_MP_APP_ID}&response_type=code&platform_id=mp&state=${user.uuid}&redirect_uri=${redirect_uri}`;
   const [clicked, setClicked] = useState<boolean>(false);
 

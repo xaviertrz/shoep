@@ -4,6 +4,7 @@ import { useAuthStore } from '../../auth/hooks/useAuthStore';
 import { useProductOptionsStore } from '../hooks/useProductOptionsStore';
 import { useCategoryStore } from '../hooks/useCategoryStore';
 import { useProductStore } from '../hooks/useProductStore';
+import Swal from 'sweetalert2';
 
 export function ProductForm() {
   const { user, logout } = useAuthStore();
@@ -63,7 +64,7 @@ export function ProductForm() {
       const imagesArray: File[] = Array.from(event.target.files);
       if (imagesArray.length < 1 || imagesArray.length > 5) {
         event.target.value = '';
-        alert('El rango de imágenes permitidas es de 1 a 5.');
+        Swal.fire('Error', 'Debes subir mínimo 1 imagen y máximo 5.', 'error');
         return;
       }
 
@@ -168,6 +169,7 @@ export function ProductForm() {
                 value={productData.variant.size_id}
                 onChange={handleVariantChange}
                 className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                required
               >
                 <option value="">Selecciona una talla</option>
                 {sizes.map((size, index) => (
@@ -187,6 +189,7 @@ export function ProductForm() {
                 value={productData.variant.material_id}
                 onChange={handleVariantChange}
                 className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                required
               >
                 <option value="">Selecciona un material</option>
                 {materials.map((material, index) => (
@@ -206,6 +209,7 @@ export function ProductForm() {
                 value={productData.variant.color_id}
                 onChange={handleVariantChange}
                 className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                required
               >
                 <option value="">Selecciona un color</option>
                 {colors.map((color, index) => (
@@ -258,6 +262,7 @@ export function ProductForm() {
                 value={productData.variant.stock || ''}
                 onChange={handleVariantChange}
                 className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                required
               />
             </div>
             <div className="flex flex-col">
@@ -271,6 +276,7 @@ export function ProductForm() {
                 value={productData.variant.price || ''}
                 onChange={handleVariantChange}
                 className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                required
               />
             </div>
           </div>

@@ -30,8 +30,22 @@ export function useProductOptionsStore() {
       const colorsData: ResponseDto<GetAllColorsDto[]> = await colorsResponse.json();
       const sizesData: ResponseDto<GetAllSizesDto[]> = await sizesResponse.json();
 
-      dispatch(onSetMaterials(materialsData.success ? materialsData.data! : []));
-      dispatch(onSetColors(colorsData.success ? colorsData.data! : []));
+      dispatch(
+        onSetMaterials(
+          materialsData.success
+            ? materialsData.data!.sort((a, b) =>
+                a.material_name.toLowerCase().localeCompare(b.material_name.toLowerCase())
+              )
+            : []
+        )
+      );
+      dispatch(
+        onSetColors(
+          colorsData.success
+            ? colorsData.data!.sort((a, b) => a.color_name.toLowerCase().localeCompare(b.color_name.toLowerCase()))
+            : []
+        )
+      );
       dispatch(onSetSizes(sizesData.success ? sizesData.data! : []));
     } catch (error) {
       console.error(error);

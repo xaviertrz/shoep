@@ -36,14 +36,14 @@ export function ProductEditSelection() {
   } = useModalStore();
   const categoryName = categories.find(category => category.id_category === active?.category_id)?.category;
   const createdAfter = calculateElapsedTime(new Date(active?.created_at));
-  const modifiedAfter = calculateElapsedTime(active.modified_at ? new Date(active.modified_at) : undefined);
+  const modifiedAfter = calculateElapsedTime(active?.modified_at ? new Date(active?.modified_at) : undefined);
 
   const [search, setSearch] = useState('');
   const [filteredVariants, setFilteredVariants] = useState<IProductVariant[]>([]);
 
   useEffect(() => {
     if (search === '') {
-      setFilteredVariants(active.product_variants);
+      setFilteredVariants(active?.product_variants);
     }
   }, [search, active]);
 
@@ -59,6 +59,12 @@ export function ProductEditSelection() {
         Swal.fire('Producto bloqueado', 'Este producto ha sido bloqueado por el administrador', 'warning');
         navigate('/productos');
       }
+    }
+  }, [active]);
+
+  useEffect(() => {
+    if (!active?.id) {
+      navigate('/productos');
     }
   }, [active]);
 
@@ -86,6 +92,8 @@ export function ProductEditSelection() {
   }
 
   function handleSearch() {
+    if (!active) return;
+
     setFilteredVariants([
       ...active.product_variants.filter(variant => {
         // Buscar por SKU
@@ -171,7 +179,7 @@ export function ProductEditSelection() {
           </div>
           <SearchBox search={search} setSearch={setSearch} handleSearch={handleSearch} />
           <ul className="flex flex-col gap-10 mt-5">
-            {filteredVariants.length > 0 ? (
+            {filteredVariants?.length > 0 ? (
               filteredVariants?.map(variant => (
                 <li
                   key={variant.uuid}

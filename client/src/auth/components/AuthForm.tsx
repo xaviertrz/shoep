@@ -3,7 +3,7 @@ import { useAuthStore } from '../hooks/useAuthStore';
 import { IAuthForm } from '../interfaces/IAuthForm';
 import { useModalStore } from '../../platform/hooks/useModalStore';
 
-export function AuthForm() {
+export function   AuthForm() {
   const { login } = useAuthStore();
   const { closeLoginModal } = useModalStore();
   const [authForm, setAuthForm] = useState<IAuthForm>({

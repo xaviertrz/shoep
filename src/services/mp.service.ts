@@ -41,7 +41,7 @@ export class MpService {
         client_secret: this.test_client_secret,
         code,
         grant_type,
-        redirect_uri: `https://${host}${this.redirect_uri}`,
+        redirect_uri: `${host}${this.redirect_uri}`,
         test_token: this.test_token
       })
     });
@@ -51,6 +51,7 @@ export class MpService {
       return await MpRepository.storeToken(user_uuid, data);
     }
 
+    console.log(data);
     return { success: false, message: 'No se pudo obtener un access token desde Mercado Pago' };
   }
 
@@ -89,7 +90,6 @@ export class MpService {
     if (preferenceData.stock < orderData.quantity) {
       return { success: false, message: 'No hay stock suficiente para la cantidad solicitada' };
     }
-
     const preference = await new Preference(client).create({
       body: {
         items: [
@@ -109,12 +109,12 @@ export class MpService {
         notification_url: `${host}/v1/payments`,
         auto_return: 'all',
         back_urls: {
-          success: `${host}/pagos/exitoso`,
-          failure: `${host}/pagos/fallido`
+          success: `http://localhost:5173/pagos/exitoso`,
+          failure: `http://localhost:5173/pagos/exitoso`
         },
         redirect_urls: {
-          success: `${host}/pagos/exitoso`,
-          failure: `${host}/pagos/fallido`
+          success: `http://localhost:5173/pagos/exitoso`,
+          failure: `http://localhost:5173/pagos/exitoso`
         }
       }
     });

@@ -3,6 +3,7 @@ import { PostVariantImageDto } from '../shared/dtos/product/post-variant-image.d
 import { IVariantImage } from '../interfaces/variant-image.interface';
 import { ProductService } from './product.service';
 import { registerDefaults } from '../constants/register-defaults';
+import { ProductRepository } from '../repositories/product.repository';
 
 export class ImageService {
   static async create(postVariantImageDto: PostVariantImageDto) /* : Promise<ResponseDto<IMaterial[]>> */ {
@@ -29,7 +30,7 @@ export class ImageService {
       return { success: false, message: 'Error obteniendo variante' };
     }
 
-    const product = await ProductService.getById(variant.data!.product_uuid);
+    const product = await ProductRepository.getById(variant.data!.product_uuid);
     return { success: true, message: 'Imagen(es) subida(s) correctamente', data: product.data };
   }
 
@@ -51,7 +52,19 @@ export class ImageService {
       return { success: false, message: 'No se puede eliminar la última imagen de la variante' };
     }
 
-    return await ImageRepository.delete(image_id);
+    const deletedImage = await ImageRepository.delete(image_id);
+    if (!deletedImage.success) {
+      return { success: false, message: 'Error eliminando imagen' };
+    }
+
+    const variant = await ProductService.getVariantById(image.data!.variant_uuid);
+    if (!variant.success) {
+      return { success: false, message: 'Error obteniendo variante' };
+    }
+
+    const product = await ProductService.getById(variant.data!.product_uuid);
+    return { success: true, message: 'Imagen eliminada correctamente', data: product.data };
+
     /*     if (!response.success) {
       return { success: false, message: 'Error eliminando imagen' };
     } */

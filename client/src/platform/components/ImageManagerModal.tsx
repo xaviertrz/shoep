@@ -13,16 +13,12 @@ export function ImageManagerModal() {
   const { isImageManagerModalOpen, closeImageManagerModal } = useModalStore();
   const [images, setImages] = useState<File[]>([]);
 
-  // Agrega un estado para las imágenes de la variante
   const [variantImages, setVariantImages] = useState(activeVariant.product_images);
 
-  // Función para eliminar una imagen de la variante
   function handleDeleteImage(imageId: number) {
-    // Filtra las imágenes para eliminar la que coincida con el ID
     deleteImage(imageId);
   }
 
-  // Función para manejar la selección de nuevas imágenes
   function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {
       const imagesArray: File[] = Array.from(event.target.files);

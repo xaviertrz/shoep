@@ -12,6 +12,7 @@ import { Quantity } from '../shared/domain/value-object/Quantity';
 
 export class MpController {
   private static client: MercadoPagoConfig;
+  private static host: string = 'https://represent-methods-protect-recently.trycloudflare.com';
 
   static async handleMercadoPagoRedirect(req: Request, res: Response) {
     try {
@@ -25,8 +26,7 @@ export class MpController {
         );
       }
 
-      const host = req.get('host')!;
-      const response = await MpService.createToken(code, user_uuid, host);
+      const response = await MpService.createToken(code, user_uuid, this.host);
       if (response.success) {
         res.status(HttpResponseCodes.OK).json(response);
       } else {
@@ -59,9 +59,8 @@ export class MpController {
         quantity: quantity.getValue()
       };
 
-      const host = req.get('host')!;
       this.client = new MercadoPagoConfig({ accessToken: preferenceData.data!.products.users.mp_access_token! });
-      const response = await MpService.createPreference(this.client, preferenceData.data!, orderData, host);
+      const response = await MpService.createPreference(this.client, preferenceData.data!, orderData, this.host);
       if (response.success) {
         res.status(HttpResponseCodes.OK).json(response);
       } else {
@@ -80,7 +79,7 @@ export class MpController {
   static async storePayment(req: Request, res: Response) {
     try {
       const notification = req.body as { data: { id: number } };
-      const payment = await new Payment({ accessToken: this.client.accessToken }).get({ id: notification.data?.id });
+      const payment = await new Payment({ accessToken: this.client?.accessToken }).get({ id: notification.data?.id });
       if (payment && payment.status === 'approved') {
         const order = {
           user_uuid: payment.external_reference!,

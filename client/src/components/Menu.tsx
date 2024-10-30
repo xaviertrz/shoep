@@ -22,7 +22,7 @@ export function Menu({ style }: { style?: string }) {
 
   if (user?.role_id === roleIds.BUYER) {
     const buyerButtons = [
-      { label: 'Pedidos', link: './pedidos' },
+      { label: 'Pedidos', link: '/pedidos' },
       { label: 'Direcciones', link: '/domicilios' },
       { label: 'Mi perfil', link: `/perfil/${user?.uuid}` },
       { label: 'Cerrar sesión', link: '/logout', action: logout }

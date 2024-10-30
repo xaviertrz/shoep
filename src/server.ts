@@ -24,12 +24,12 @@ import path from 'path';
 import './polyfills';
 import fs from 'fs';
 
-function printFileTree(dir: string, prefix: string = ''): void {
+/* function printFileTree(dir: string, prefix: string = ''): void {
   const files = fs.readdirSync(dir);
 
   files.forEach(file => {
     if (file === 'node_modules') {
-      return; // Skip the 'node_modules' directory
+      return;
     }
 
     const filePath = path.join(dir, file);
@@ -44,10 +44,10 @@ function printFileTree(dir: string, prefix: string = ''): void {
   });
 }
 
-printFileTree('./');
+printFileTree('./'); */
 
 export class Server {
-  private express: express.Express;
+  public express: express.Express;
   readonly port: string;
   httpServer?: http.Server;
   private staticPath: string = '../client/dist/';
@@ -79,12 +79,11 @@ export class Server {
     this.express.use(orderRoutes);
 
     this.express.use(express.static(path.join(this.basePath, this.staticPath)));
-    this.express.use('/public/images/', express.static(path.join(this.basePath, '/public/images/')));
+    /* this.express.use('/public/images/', express.static(path.join(this.basePath, '/public/images/'))); PROD */
+    this.express.use('/public/images/', express.static(path.join(this.basePath, '../public/images/')));
     this.express.get('*', (req, res) => {
       try {
-        // Read index.html file synchronously
         const data = fs.readFileSync(path.join(this.basePath, this.staticPath, 'index.html'), 'utf8');
-        // Send the contents of index.html as the response
         res.send(data);
       } catch (err) {
         console.error('Error reading index.html:', err);

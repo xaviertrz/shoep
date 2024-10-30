@@ -277,7 +277,7 @@ export class ProductRepository {
     }
   }
 
-  static async getAllByCategoryId(categoryId: number, page: number, perPage: number): Promise<any> {
+  static async getAllByCategoryId(categoryId: number, page: number, perPage: number): Promise<ResponseDto<IProduct[]>> {
     try {
       const skip = (page - 1) * perPage;
       const products = await prisma.products.findMany({
@@ -287,8 +287,12 @@ export class ProductRepository {
               product_images: {
                 where: { active: true }
               }
+            },
+            where: {
+              active: true
             }
           },
+
           users: {
             select: {
               uuid: true,
@@ -309,15 +313,7 @@ export class ProductRepository {
         skip,
         take: perPage
       });
-
-      /* const productsDto = products.map(product => {
-        const mappedUser = mapToSellerDto(product.users);
-        return { ...product, users: mappedUser };
-      }); */
-
       return { success: true, data: products };
-
-      /* return { success: true, message: 'No hay productos para consultar' }; */
     } catch (error) {
       console.error(error);
       return { success: false, message: 'Error consultando productos' };
@@ -334,6 +330,9 @@ export class ProductRepository {
               product_images: {
                 where: { active: true }
               }
+            },
+            where: {
+              active: true
             }
           },
           users: {
@@ -363,14 +362,7 @@ export class ProductRepository {
         take: perPage
       });
 
-      /* const productsDto = products.map(product => {
-        const mappedUser = mapToSellerDto(product.users);
-        return { ...product, users: mappedUser };
-      }); */
-
       return { success: true, data: products };
-
-      /* return { success: true, message: 'No hay productos para consultar' }; */
     } catch (error) {
       console.error(error);
       return { success: false, message: 'Error consultando productos por material' };
@@ -387,6 +379,9 @@ export class ProductRepository {
               product_images: {
                 where: { active: true }
               }
+            },
+            where: {
+              active: true
             }
           },
           users: {
@@ -416,14 +411,7 @@ export class ProductRepository {
         take: perPage
       });
 
-      /* const productsDto = products.map(product => {
-        const mappedUser = mapToSellerDto(product.users);
-        return { ...product, users: mappedUser };
-      }); */
-
       return { success: true, data: products };
-
-      /* return { success: true, message: 'No hay productos para consultar' }; */
     } catch (error) {
       console.error(error);
       return { success: false, message: 'Error consultando productos por color' };
@@ -440,6 +428,9 @@ export class ProductRepository {
               product_images: {
                 where: { active: true }
               }
+            },
+            where: {
+              active: true
             }
           },
           users: {
@@ -469,14 +460,7 @@ export class ProductRepository {
         take: perPage
       });
 
-      /* const productsDto = products.map(product => {
-        const mappedUser = mapToSellerDto(product.users);
-        return { ...product, users: mappedUser };
-      }); */
-
       return { success: true, data: products };
-
-      /* return { success: true, message: 'No hay productos para consultar' }; */
     } catch (error) {
       console.error(error);
       return { success: false, message: 'Error consultando productos por talla' };

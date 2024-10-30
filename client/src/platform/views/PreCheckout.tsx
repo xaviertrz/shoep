@@ -91,7 +91,7 @@ export function PreCheckout() {
         {/* Columna 2: Datos del Producto */}
         <div className="w-full lg:w-2/3">
           <div className="w-full">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="divide-y divide-gray-200">
               <thead>
                 <tr>
                   <th scope="col" className="py-4 text-left text-xs font-medium text-gray-500 uppercase ">
@@ -110,8 +110,8 @@ export function PreCheckout() {
               </thead>
               <tbody className="text-left bg-white divide-y divide-gray-200">
                 <tr>
-                  <td className="py-4 whitespace-nowrap w-full">
-                    <div className="flex items-start gap-4">
+                  <td className="py-4 w-full">
+                    <div className="flex flex-col md:flex-row items-start gap-4">
                       <div className="flex-shrink-0">
                         <img
                           className="rounded-md object-cover h-24 w-24"

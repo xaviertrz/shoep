@@ -12,19 +12,21 @@ import { onCloseEditVariantModal, onCloseImageManagerModal } from '../../store/m
 import { useModalStore } from './useModalStore';
 import Swal from 'sweetalert2';
 import { ENV } from '../../env';
+import { useNavigate } from 'react-router-dom';
 
 export function useProductStore() {
   const { closeAddVariantModal, closeEditProductModal } = useModalStore();
   const { products, active, activeVariant } = useAppSelector(state => state.product);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const url = ENV.PROD;
 
-  async function fetchProductsByCategoryId(categoryId: number, page: number) {
+  async function fetchProductsByCategoryId(categoryId: number) {
     try {
       const endpoint = 'products';
       const filter = 'by-category';
 
-      const response = await fetch(`${url}/${endpoint}/${filter}/${categoryId}?page=${page}`, {
+      const response = await fetch(`${url}/${endpoint}/${filter}/${categoryId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -37,12 +39,12 @@ export function useProductStore() {
     }
   }
 
-  async function fetchProductsByMaterialId(materialId: number, page: number) {
+  async function fetchProductsByMaterialId(materialId: number) {
     try {
       const endpoint = 'products';
       const filter = 'by-material';
 
-      const response = await fetch(`${url}/${endpoint}/${filter}/${materialId}?page=${page}`, {
+      const response = await fetch(`${url}/${endpoint}/${filter}/${materialId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -55,12 +57,12 @@ export function useProductStore() {
     }
   }
 
-  async function fetchProductsBySizeId(sizeId: number, page: number) {
+  async function fetchProductsBySizeId(sizeId: number) {
     try {
       const endpoint = 'products';
       const filter = 'by-size';
 
-      const response = await fetch(`${url}/${endpoint}/${filter}/${sizeId}?page=${page}`, {
+      const response = await fetch(`${url}/${endpoint}/${filter}/${sizeId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -73,12 +75,12 @@ export function useProductStore() {
     }
   }
 
-  async function fetchProductsByColorId(colorId: number, page: number) {
+  async function fetchProductsByColorId(colorId: number) {
     try {
       const endpoint = 'products';
       const filter = 'by-color';
 
-      const response = await fetch(`${url}/${endpoint}/${filter}/${colorId}?page=${page}`, {
+      const response = await fetch(`${url}/${endpoint}/${filter}/${colorId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -103,18 +105,21 @@ export function useProductStore() {
         }
       });
       const product: ResponseDto<IProduct> = await response.json();
-      dispatch(onSetActive(product.success ? product.data! : ({} as IProduct)));
+
+      if (product.success) {
+        dispatch(onSetActive(product.data!));
+      }
     } catch (error) {
       console.error(error);
     }
   }
 
-  async function fetchProductsBySellerUuid(sellerUuid: string, page: number = 1) {
+  async function fetchProductsBySellerUuid(sellerUuid: string) {
     try {
       const endpoint = 'products';
       const filter = 'by-seller-uuid';
 
-      const response = await fetch(`${url}/${endpoint}/${filter}/${sellerUuid}?page=${page}`, {
+      const response = await fetch(`${url}/${endpoint}/${filter}/${sellerUuid}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -162,7 +167,10 @@ export function useProductStore() {
         formData.append('variant_uuid', productData.data!.uuid);
         /* const imageData: ResponseDto<any> =  */ await postImages(formData);
         Swal.fire('Producto creado', productData.message, 'success');
+        return;
       }
+
+      Swal.fire('Error', productData.message, 'error');
     } catch (error) {
       console.error(error);
     }
@@ -200,9 +208,12 @@ export function useProductStore() {
         formData.append('variant_uuid', variantData.data!.uuid);
         const imagesData: ResponseDto<IProduct> = await postImages(formData);
         if (imagesData.success) {
+          console.log(imagesData.data!);
           dispatch(onSetActive(imagesData.success ? imagesData.data! : ({} as IProduct)));
           closeAddVariantModal();
         }
+      } else {
+        Swal.fire('Error', variantData.message, 'error');
       }
     } catch (error) {
       console.error(error);
@@ -271,6 +282,7 @@ export function useProductStore() {
       const blockResponse: ResponseDto<void> = await response.json();
       if (blockResponse.success) {
         Swal.fire('Producto bloqueado', blockResponse.message, 'success');
+        navigate(-1);
         closeEditProductModal();
       } else {
         Swal.fire('Error', blockResponse.message, 'error');
@@ -331,9 +343,10 @@ export function useProductStore() {
         method: 'POST',
         body: formData
       });
-      const imagesData: ResponseDto<unknown> = await response.json();
+      const imagesData: ResponseDto<IProduct> = await response.json();
       if (imagesData.success) {
         Swal.fire('Imágenes subidas', 'Se subieron las imágenes del producto', 'success');
+        dispatch(onSetActive(imagesData.success ? imagesData.data! : ({} as IProduct)));
         dispatch(onCloseImageManagerModal());
       } else {
         Swal.fire('Error subiendo imágenes', imagesData.message, 'error');
@@ -352,7 +365,7 @@ export function useProductStore() {
           'Content-Type': 'application/json'
         }
       });
-      const data: ResponseDto<unknown> = await response.json();
+      const data: ResponseDto<IProduct> = await response.json();
       if (data.success) {
         Swal.fire('Imagen eliminada', 'Se elimino la imagen del producto', 'success');
         const newImages = activeVariant.product_images.filter(image => image.id !== imageId);
@@ -363,6 +376,8 @@ export function useProductStore() {
             product_images: newImages
           })
         );
+
+        dispatch(onSetActive(data.data!));
       } else {
         Swal.fire('Error eliminando imagen', data.message, 'error');
       }

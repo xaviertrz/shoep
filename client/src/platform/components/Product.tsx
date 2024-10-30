@@ -35,7 +35,7 @@ export function Product() {
     if (active) {
       if (active?.blocked) {
         Swal.fire('Producto bloqueado', 'Este producto ha sido bloqueado por el administrador', 'error');
-        navigate('/');
+        navigate('/catalogo');
       }
     }
   }, [active]);
@@ -109,7 +109,7 @@ export function Product() {
                 <h4 className="font-light text-gray-500 text-sm mb-4 uppercase">Marca: {active?.brand}</h4>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-light text-sm ml-2">{activeVariant.sku || 'N/A'}</span>
+                <span className="font-light text-sm ml-2">{activeVariant.upc || 'N/A'}</span>
                 <FaBarcode size={24} />
               </div>
             </div>

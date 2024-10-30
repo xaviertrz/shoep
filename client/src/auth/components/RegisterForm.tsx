@@ -105,7 +105,7 @@ export function RegisterForm({ type }: { type: number }) {
                 id="phone_number"
                 name="phone_number"
                 onChange={event => setRegisterData({ ...registerData, phone_number: Number(event.target.value) })}
-                value={registerData.phone_number === 0 ? '' : registerData.phone_number}
+                value={registerData.phone_number || ''}
                 aria-describedby="helper-text-explanation"
                 className="p-2 w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-gray-50 rounded-r-lg border border-gray-300"
                 placeholder="300 000 0000"
@@ -189,7 +189,7 @@ export function RegisterForm({ type }: { type: number }) {
               {type === roleIds.BUYER ? 'Soy un emprendedor' : 'Soy un comprador'}
             </Link>
           ) : (
-            <div className="-mt-4 md:mb-0 mb-5">
+            <div className=" md:mb-0 mb-5">
               <label htmlFor="key" className="block text-sm text-gray-700">
                 Código *
               </label>

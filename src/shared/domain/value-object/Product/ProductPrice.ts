@@ -12,8 +12,8 @@ export class ProductPrice extends ValueObject<number> {
       throw new ValueObjectException(`El precio <"${value}"> no es un número`);
     }
 
-    if (value < 0) {
-      throw new ValueObjectException(`El precio <${value}> no es válido, debe ser mayor o igual a 0`);
+    if (value <= 0) {
+      throw new ValueObjectException(`El precio <${value}> no es válido, el precio debe ser un número mayor a 0`);
     }
   }
 

@@ -122,7 +122,7 @@ export function AddAddressModal() {
               type="text"
               id="phone_number"
               name="phone_number"
-              value={addressData.phone_number}
+              value={addressData.phone_number || ''}
               onChange={handleChange}
               className="border border-gray-300 rounded-md px-3 py-2 w-full"
               required

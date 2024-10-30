@@ -7,6 +7,8 @@ import { roleIds } from '../../constants/role-ids';
 export function ProductPreview({ product }: { product: IProduct }) {
   const { user } = useAuthStore();
 
+  console.log(product);
+
   return (
     <Link
       to={`/productos/${product.uuid}`}

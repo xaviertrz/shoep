@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useProductStore } from '../hooks/useProductStore';
 import { ProductPreview } from './ProductPreview';
 import { useParams } from 'react-router-dom';
 
 export function ProductList() {
-  const [currentPage, setCurrentPage] = useState(1);
   const { id } = useParams<{ id: string }>();
   const {
     fetchProductsByMaterialId,
@@ -22,28 +21,24 @@ export function ProductList() {
   useEffect(() => {
     if (id) {
       if (endpoint === 'categorias') {
-        fetchProductsByCategoryId(Number(id), currentPage);
+        fetchProductsByCategoryId(Number(id));
       }
 
       if (endpoint === 'materiales') {
-        fetchProductsByMaterialId(Number(id), currentPage);
+        fetchProductsByMaterialId(Number(id));
       }
 
       if (endpoint === 'tallas') {
-        fetchProductsBySizeId(Number(id), currentPage);
+        fetchProductsBySizeId(Number(id));
       }
 
       if (endpoint === 'colores') {
-        fetchProductsByColorId(Number(id), currentPage);
+        fetchProductsByColorId(Number(id));
       }
     } else {
       cleanList();
     }
-  }, [id, currentPage, endpoint]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [id]);
+  }, [id, endpoint]);
 
   if (!id) {
     return (
@@ -68,10 +63,6 @@ export function ProductList() {
       </div>
     );
   }
-
-  /*   const handlePageChange = (page: number) => {
-    setCurrentPage(page); 
-  }; */
 
   return (
     <div className="flex">

@@ -8,19 +8,17 @@ export class ColorRepository {
     try {
       const colors = await prisma.$queryRaw<GetAllColorsDto[]>`
       SELECT
-        pc.id AS color_id,
-        pc.name AS color_name,
-        COALESCE(COUNT(DISTINCT CASE WHEN pv.active = true THEN p.uuid END), 0) AS product_count
+          pc.id AS color_id,
+          pc.name AS color_name,
+          COALESCE(COUNT(DISTINCT CASE WHEN p.active = true AND pv.active = true THEN p.uuid END), 0) AS product_count
       FROM
-        product_colors pc
+          product_colors pc
       LEFT JOIN
-        product_variants pv ON pc.id = pv.color_id
+          product_variants pv ON pc.id = pv.color_id
       LEFT JOIN
-        products p ON pv.product_uuid = p.uuid AND p.blocked = FALSE
-      WHERE
-        (p.active = true OR p.active IS NULL)
+          products p ON pv.product_uuid = p.uuid AND (p.active = true OR p.active IS NULL) AND p.blocked = FALSE
       GROUP BY
-        pc.id, pc.name;
+          pc.id, pc.name;
 `;
       return { success: true, message: 'Lista de colores consultada correctamente', data: colors };
     } catch (error) {

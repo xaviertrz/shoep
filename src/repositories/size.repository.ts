@@ -8,20 +8,18 @@ export class SizeRepository {
     try {
       const sizes = await prisma.$queryRaw<GetAllSizesDto[]>`
       SELECT
-        ps.id AS size_id,
-        ps.number AS size_number,
-        ps.centimeters AS size_centimeters,
-        COALESCE(COUNT(DISTINCT CASE WHEN pv.active = true THEN p.uuid END), 0) AS product_count
+          ps.id AS size_id,
+          ps.number AS size_number,
+          ps.centimeters AS size_centimeters,
+          COALESCE(COUNT(DISTINCT CASE WHEN p.active = true AND pv.active = true THEN p.uuid END), 0) AS product_count
       FROM
-        product_sizes ps
+          product_sizes ps
       LEFT JOIN
-        product_variants pv ON ps.id = pv.size_id
+          product_variants pv ON ps.id = pv.size_id
       LEFT JOIN
-        products p ON pv.product_uuid = p.uuid AND p.blocked = FALSE
-      WHERE
-        (p.active = true OR p.active IS NULL)
+          products p ON pv.product_uuid = p.uuid AND p.active = true AND p.blocked = FALSE
       GROUP BY
-        ps.id, ps.number, ps.centimeters;
+          ps.id, ps.number, ps.centimeters;
 `;
       return { success: true, message: 'Lista de tallas consultada correctamente', data: sizes };
     } catch (error) {
